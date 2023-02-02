@@ -1,0 +1,416 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>机器学习笔记（12）机器学习应用 | Kuhne</title><meta name="keywords" content="人工智能,机器学习,基础"><meta name="author" content="傅琨皓"><meta name="copyright" content="傅琨皓"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="OCR 问题、滑动窗口、人工数据合成、上限分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习笔记（12）机器学习应用">
+<meta property="og:url" content="https://kuhne.gitee.io/kuhne.gitee.io/2022/05/29/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%8812%EF%BC%89%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="Kuhne">
+<meta property="og:description" content="OCR 问题、滑动窗口、人工数据合成、上限分析">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/Machine-Learning.jpg">
+<meta property="article:published_time" content="2022-05-29T13:08:39.000Z">
+<meta property="article:modified_time" content="2022-06-02T08:06:00.000Z">
+<meta property="article:author" content="傅琨皓">
+<meta property="article:tag" content="人工智能">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="基础">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/Machine-Learning.jpg"><link rel="shortcut icon" href="/kuhne.gitee.io/img/head2.png"><link rel="canonical" href="https://kuhne.gitee.io/kuhne.gitee.io/2022/05/29/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%8812%EF%BC%89%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%BA%94%E7%94%A8/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/kuhne.gitee.io/css/index.css"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.0.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.staticfile.org/node-snackbar/0.1.9/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/kuhne.gitee.io/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://jsdelivr.pai233.top/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://jsdelivr.pai233.top/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '机器学习笔记（12）机器学习应用',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-06-02 16:06:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/resource/JetBrainsMono-Medium.woff2"><link rel="stylesheet" href="/kuhne.gitee.io/css/index.min.css"><meta name="generator" content="Hexo 5.4.2"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="/kuhne.gitee.io/img/head.jpg" onerror="onerror=null;src='/img/head.jpg'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/kuhne.gitee.io/archives/"><div class="headline">文章</div><div class="length-num">72</div></a></div><div class="data-item"><a href="/kuhne.gitee.io/tags/"><div class="headline">标签</div><div class="length-num">41</div></a></div><div class="data-item"><a href="/kuhne.gitee.io/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/kuhne.gitee.io/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-archive"></i><span> Blog</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/kuhne.gitee.io/archives/"><i class="fa-fw fas fa-list-ul"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/kuhne.gitee.io/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/kuhne.gitee.io/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/kuhne.gitee.io/pictures/"><i class="fa-fw fa fa-camera"></i><span> 图片</span></a></li><li><a class="site-page child" href="/kuhne.gitee.io/talk/"><i class="fa-fw fas fa-comment-dots"></i><span> 说说</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/kuhne.gitee.io/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/kuhne.gitee.io/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/Machine-Learning.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/kuhne.gitee.io/">Kuhne</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/kuhne.gitee.io/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-archive"></i><span> Blog</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/kuhne.gitee.io/archives/"><i class="fa-fw fas fa-list-ul"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/kuhne.gitee.io/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/kuhne.gitee.io/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/kuhne.gitee.io/pictures/"><i class="fa-fw fa fa-camera"></i><span> 图片</span></a></li><li><a class="site-page child" href="/kuhne.gitee.io/talk/"><i class="fa-fw fas fa-comment-dots"></i><span> 说说</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/kuhne.gitee.io/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/kuhne.gitee.io/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">机器学习笔记（12）机器学习应用</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-05-29T13:08:39.000Z" title="发表于 2022-05-29 21:08:39">2022-05-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-06-02T08:06:00.000Z" title="更新于 2022-06-02 16:06:00">2022-06-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/kuhne.gitee.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>9分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="机器学习笔记（12）机器学习应用"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>机器学习笔记（12）机器学习应用</h1>
+<p><em>OCR 问题 / 滑动窗口 / 人工数据合成 / 上限分析  2022/5/29</em></p>
+<h2 id="一、OCR-问题描述">一、OCR 问题描述</h2>
+<h3 id="1-1-OCR-与机器学习流水线-pipeline-介绍">1.1 OCR 与机器学习流水线 (pipeline) 介绍</h3>
+<p>照片 OCR 的全称是 “照片光学字符识别” ，随着数码摄影和手机摄像头的发展，现在有很多不同的照片，如何让计算机更好地理解照片是一个新的问题，照片 OCR 问题注重的是如何让计算机读出图片中的微信信息。假如有这样的一张图片：</p>
+<img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/131740-18da4.png" alt="照片" style="zoom:67%;" />
+<p>希望计算机能读出照片中的文字，如果之后想找出这张图片，只需输入照片中的文字 “LULA B’s ANTIQUE MALL” ，就能自动找出这张图片，这就是 OCR 需要做的事。</p>
+<p>OCR 的工作分为以下几步：</p>
+<ol>
+<li>
+<p>给定某张图片，计算机扫描整张图片，找出照片中的文字信息；</p>
+<img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/132119-97be2.png" alt="找出文字" style="zoom:67%;" />
+</li>
+<li>
+<p>将文字区域提取出来，进行文字分离；</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/132708-5e1d7.png" alt="提取区域"></p>
+</li>
+<li>
+<p>分割好独立字符后，使用分类器对这些可见字符进行识别；</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/132756-e24db.png" alt="问题识别"></p>
+</li>
+<li>
+<p>有些 OCR 系统可以实现更复杂的功能，比如识别文字校正。</p>
+</li>
+</ol>
+<p>像这样的一个文字区域检测、字符分割、字符分类过程，我们称之为<strong>机器学习流水线 (pipeline)</strong>。</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/133117-92289.png" alt="OCR 流水线"></p>
+<p>在复杂的机器学习系统中，这种流水线形式非常普遍，在流水线种有多个不同的模块，每个模块都是一个机器学习组件。如果要开发一个机器学习系统，流水线中各个模块的设计是最重要的问题之一，这通常会影响算法最终的表现。</p>
+<h3 id="1-2-滑动窗口">1.2 滑动窗口</h3>
+<p>这一节将介绍机器学习流水线中，每个独立组件的工作原理，主要涉及一种叫滑动窗口分类器的东西。</p>
+<p>OCR 的第一步是文字识别，扫描给定的一张图片，找出文字出现的区域：</p>
+<img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/132119-97be2.png" alt="找出文字" style="zoom:67%;" />
+<p>而文字识别在 CV 中是一个比较难的问题，因为文字区域对应的矩形具有不同的长宽比，为了描述如何从图像中找到它们，先从一个比较简单的行人检测开始。</p>
+<h4 id="1-2-1-行人检测">1.2.1 行人检测</h4>
+<p>在行人检测中，会提供一张类似这样的图片：</p>
+<img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/135648-abc21.png" alt="行人图片" style="zoom:67%;" />
+<p>我们需要找到图片中各个行人：</p>
+<img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/135732-a9683.png" alt="行人检测" style="zoom:67%;" />
+<p>这个问题相对于文字识别更为简单的地方在于：识别的物体具有相似的长宽比，仅用一个固定长宽比的矩形就可以完成检测。</p>
+<p>为了建立一个行人检测系统，我们把比例标准固定为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>82</mn><mo>×</mo><mn>36</mn></mrow><annotation encoding="application/x-tex">82 \times 36</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">82</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">36</span></span></span></span>，并从数据集中收集一些正样本和负样本</p>
+<img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/140116-344da.png" alt="样本集" style="zoom:67%;" />
+<p>随后在神经网络或其他算法模型中输入样本，让算法判断图片中是否包含行人。</p>
+<p>假设现在得到了一张新图，尝试找到一个行人，算法首先会在图片中选取一个矩形块（左上角）：</p>
+<img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/140657-85000.png" alt="选取矩形块" style="zoom:67%;" />
+<p>将这个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>82</mn><mo>×</mo><mn>36</mn></mrow><annotation encoding="application/x-tex">82 \times 36</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">82</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">36</span></span></span></span> 的图像块输入分类器，来检测图块中是否有行人，这时分类器应该会返回 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span> 。</p>
+<p>接下来将这个矩形移动一小段距离，再把图块传递给分类器，判断图块中是否存在行人：</p>
+<img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/140902-bb463.png" alt="移动矩形块" style="zoom:67%;" />
+<blockquote>
+<p>矩阵每次移动的距离是一个被称为<strong>步长</strong>的参数，有时也被称为<strong>滑动参数</strong>，如果一次移动 1 个像素，就设置步长 为 1 ，但会导致计算量过大，一般来说把步长设置为 4 像素或 8 像素或更大的数。</p>
+</blockquote>
+<p>继续向右移动矩形，每次都用分类器对图像进行判断，直到窗口在图中的各个位置都过一遍。</p>
+<img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/141439-1459b.png" alt="便利图像" style="zoom:67%;" />
+<p>由于这只是一个特定大小的矩阵，它只能识别特定大小的行人，接下来要使用更大的图块，用新的矩形遍历图像，reshape 为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>82</mn><mo>×</mo><mn>36</mn></mrow><annotation encoding="application/x-tex">82 \times 36</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">82</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">36</span></span></span></span> 的大小  ，并输入分类器进行判断。</p>
+<img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/141617-d9b66.png" alt="改变图块大小" style="zoom:67%;" />
+<p>不断调整图块大小并遍历图片后，算法就能检测出图中各个地方是否出现行人。</p>
+<p>以上就是使用滑动窗口分类器找出图像中所有行人的方式 ，现在回到 OCR 流水线中找出文字区域的过程。</p>
+<h4 id="1-2-2-文字识别">1.2.2 文字识别</h4>
+<p>与行人检测类似，给出一系列包含正样本和负样本的训练集，正样本对应区域有文字出现，负样本相反。</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/164525-97a02.png" alt="文字检测数据集"></p>
+<p>训练完成后，可以将其应用在一个新的测试集的图片上，我们使用之前的图片，在它上面运行算法，首先采用<strong>固定比例</strong>的滑动窗口。</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/164829-5c9a7.png" alt="运行算法"></p>
+<p>再其上运行完算法后，会得到这样的结果：</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/164912-c7f18.png" alt="运行结果"></p>
+<p>白色区域代表文本检测算法检测到了文本出现，颜色的深浅对应该处是文字概率的低和高。</p>
+<p>随后将分类器的输出应用到一种叫<strong>放大算子</strong>的东西上，它首先判断每一像素一定范围内是否存在白色像素，如果该像素周围 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn><mo>∼</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">5 \sim 10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">5</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">10</span></span></span></span> 范围内存在白色像素， 就在图中把整个范围内的像素都变为白色，效果如下图。</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/165527-e58df.png" alt="放大算子计算"></p>
+<p>随后观察图像中白色像素的关联部分。</p>
+<p>因为文字周围框的宽度应该远大于高度，我们需要排除一些比例奇怪的矩形，随后框选出正常比例的区域。</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/171038-a3f58.png" alt="选框"></p>
+<p>（虽然这样做效果看起来不错，但仍然由于比例问题，漏掉了一块区域。）</p>
+<p>随后我能就能将这部分区域剪出来，进入流水线的下一部分 —— 字符分割。</p>
+<h4 id="1-2-3-文字分割">1.2.3 文字分割</h4>
+<p>给定如下图片，再次使用监督学习算法，将图像中的单个字符分隔开。</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/171831-00602.png" alt="文字区域"></p>
+<p>给定正样本和负样本，判断是否存在文字分隔的地方，如果存在间隔，就将其视为正样本（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">y=1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>），反之视为负样本。</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/171944-67dba.png" alt="分隔样本"></p>
+<p>所以现在需要做的是训练一个分类器，尝试区分正样本和负样本，随后将分类器应用到文本图像中：</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/172604-e2282.png" alt="识别文字"></p>
+<p>这是一个一维的滑动窗口分类器，只有一行，当窗口运动到上图位置时，分类器会输出 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">y=1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> ，这时候会再图像中绘制一条直线来分割字符。</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/172758-6a1c2.png" alt="分割文字"></p>
+<p>文字分割完成后，进入流水线的最后一步，文字分类，将分割后的图片分类为 26 个字母，就完成了最后的任务。</p>
+<h2 id="二、-人工数据合成">二、 人工数据合成</h2>
+<p>曾提到过得到高性能机器学习系统的方法是，使用一个低偏差的机器学习算法，并使用大训练集训练算法，但如何取得这么多数据呢？实际上，在机器学习领域有一个概念叫做<strong>人工数据合成</strong>，虽然他并不适用于所有问题，但如果它适用于某个机器学习问题，他就能轻松得到大规模的训练集。</p>
+<blockquote>
+<p>人工数据合成有两种形式，第一种是<strong>从零开始自己创造数据</strong>，第二种是已经拥有小标签训练集，以某种方式<strong>扩充训练集</strong>。</p>
+</blockquote>
+<h3 id="2-1-从零开始生成图像">2.1 从零开始生成图像</h3>
+<p>假如我们收集了一个大规模的标签数据集， 希望机器能识别出  “T” ，“S” 和 “I” 等等。</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/174209-8e36e.png" alt="大规模数据"></p>
+<p>这些都是真实图像，我们如何得到一个更大的训练集呢？</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/175634-b485c.png" alt="字体库"></p>
+<p>现在计算机通常有庞大的字体库，因此，如果希望得到更多的训练样本，可以使用不同字体生成字符，并将其粘贴到任意不同的背景中，这样就能得到一个人造训练集（在构造的过程中，可以应用<strong>模糊算子</strong>或者<strong>仿射变换</strong>）。</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/175716-184f4.png" alt="人造训练集"></p>
+<p>使用这种方式合成数据，我们就拥有了无限的标签数据。</p>
+<h3 id="2-2-使用现有样本生成数据：">2.2 使用现有样本生成数据：</h3>
+<p>我们取一个真实的样本，他可能来自于一张真实图片，</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/180707-acf39.png" alt="真实图片A"></p>
+<p>随后对这张图进行人工拉伸，生成 16 个新的样本：</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/180815-04d68.png" alt="人工拉伸图片"></p>
+<p>这样就能将一个小的标签训练集扩充为更大的训练集，而为了得到这种效果，需要深入理解哪些扭曲是合理的。</p>
+<p>对于字符识别，引入这些拉伸看起来是很自然的选择，但是对于其他的机器学习问题，有不同的处理方式。比如语音识别，希望从一段音频中提取出出现过的单词，对应人工数据合成的方法是<strong>引入额外的失真语音</strong>，在背景中添加嘈杂音，就能获得无限的训练样本。</p>
+<blockquote>
+<p>如果试图自己完成引入失真合成数据时，引入的失真<strong>应该具有代表性</strong>，这些扭曲或噪音是有可能出现在测试集中的，比如字符的扭曲，是可能出现在现实生活中的。</p>
+</blockquote>
+<h3 id="2-3-人工生成数据的注意事项">2.3 人工生成数据的注意事项</h3>
+<ol>
+<li>在花时间生成人工训练样本之前，最好先确保算法的偏差值较低，因为只有低偏差的算法，增大训练集才会起到作用（绘制学习曲线）。</li>
+<li>问问自己 “获得当前拥有数据的 10 倍数据量需要花费多长时间”？如果获取数据不算困难，就不需要去人工合成数据，而是花时间自己整理标记数据。</li>
+</ol>
+<h2 id="三、上限分析">三、上限分析</h2>
+<p>在开发一个机器学习项目时，常常会遇到花费了很长时间，系统却没有很大提升的现象，本节介绍<strong>上限分析</strong>的方法，可以指导开发者了解那一部分最值得花时间研究。</p>
+<p>为了讲解上限分析，我们继续使用之前的 OCR 工作流水线。</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/191503-d2acb.png" alt="OCR 流水线"></p>
+<p>这几个方框的部分可能都需要不同的团队来完成，但是需要合理地分配资源，上限分析的作用是让开发者直到哪些部分是最值得花费资源的。</p>
+<p>与其他机器学习系统相同，为了决定如何开发一个系统，可以在机器学习系统中使用一个数值评价，用于度量系统效率（比如文字识别地正确率）。</p>
+<p>比如目前我们得到整个系统目前的准确率为 72% ：</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/193336-d2627.png" alt="总系统准确率"></p>
+<p>随后关注流水线地第一个模块（文本检测），对每一个测试样本都提供一个正确的文本检测结果，即人为地告诉算法每一个测试样本中文本的位置，为了得到在文本检测拥有 100% 精准率的情况下系统的准确率如何。</p>
+<p>继续对接下来的几个模块做相同的事情，得到对应条件下系统的准确率</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/194938-2441a.png" alt="调整训练集"></p>
+<p>现在我们能理解，每一个模块的改善的空间有多大。如果有一个 100% 准确的文本检测模块，系统的准确率将从72% 提升到 89% ，有 17% 的提升，意味着完善该模块可以很大程度提高系统准确率；相对的如果使用了完美的字符分割模块，系统准确率仅提高了 1%，说明着力于提高该模块无法显著提高系统准确率。</p>
+<p>通过这种分析，可以清楚地知道改善每个模块对整个系统的影响。</p>
+<p>假如采用图片进行人脸识别，我们设计了这样的工作流水线：</p>
+<ol>
+<li>图像预处理：去除背景图片</li>
+<li>面部识别，找到人脸</li>
+<li>眼、鼻、口分割，获取特征</li>
+<li>输入特征给逻辑回归分类器，得出最终的标签</li>
+</ol>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/200455-2efe3.png" alt="机器学习流水线"></p>
+<p>对于这个流水线，我们仍是每次关注一个步骤。假如整个系统的准确率是 85% ，首先找到第一个模块，给与前景和背景地分割结果，观察系统的准确率提到了 0.1%；随后找到第二个模块，给出正确的人脸位置，以此类推，直到遍历完所有的模块。</p>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/201139-16720.png" alt="上限分析"></p>
+<p>经过一步步分析，可以得到改善每个模块能对系统精准率产生的影响有多少大，从整体上看，最应该去优化的是脸部检测模块。</p>
+<blockquote>
+<p>完结撒花！！！</p>
+</blockquote>
+<p><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/29/202052-308b8.png" alt=""></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">傅琨皓</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://kuhne.gitee.io/kuhne.gitee.io/2022/05/29/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%8812%EF%BC%89%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%BA%94%E7%94%A8/">https://kuhne.gitee.io/kuhne.gitee.io/2022/05/29/机器学习笔记（12）机器学习应用/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://kuhne.gitee.io/kuhne.gitee.io" target="_blank">Kuhne</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/kuhne.gitee.io/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a><a class="post-meta__tags" href="/kuhne.gitee.io/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="post-meta__tags" href="/kuhne.gitee.io/tags/%E5%9F%BA%E7%A1%80/">基础</a></div><div class="post_share"></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/kuhne.gitee.io/2022/06/02/%E5%90%B4%E6%81%A9%E8%BE%BE%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%AF%BE%E7%A8%8B%E5%8F%8A%E7%9B%B8%E5%85%B3%E5%81%9A%E4%BD%9C%E4%B8%9A%E5%BD%92%E7%BA%B3/"><img class="prev-cover" src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/1c1d3d92-1bee-4cbd-9e14-43bcf5180b81_.jpg" onerror="onerror=null;src='/kuhne.gitee.io/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">吴恩达机器学习课程笔记及作业归纳</div></div></a></div><div class="next-post pull-right"><a href="/kuhne.gitee.io/2022/05/29/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%8811%EF%BC%89%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"><img class="next-cover" src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/Machine-Learning.jpg" onerror="onerror=null;src='/kuhne.gitee.io/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">机器学习笔记（11）大规模机器学习</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/kuhne.gitee.io/2022/05/29/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%8811%EF%BC%89%E5%A4%A7%E8%A7%84%E6%A8%A1%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" title="机器学习笔记（11）大规模机器学习"><img class="cover" src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/Machine-Learning.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-29</div><div class="title">机器学习笔记（11）大规模机器学习</div></div></a></div><div><a href="/kuhne.gitee.io/2022/05/26/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%8810%EF%BC%89%E5%BC%82%E5%B8%B8%E6%A3%80%E6%B5%8B%E5%92%8C%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/" title="机器学习笔记（10）异常检测和推荐系统"><img class="cover" src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/Machine-Learning.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-26</div><div class="title">机器学习笔记（10）异常检测和推荐系统</div></div></a></div><div><a href="/kuhne.gitee.io/2022/05/19/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%889%EF%BC%89%E6%97%A0%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/" title="机器学习笔记（9）无监督学习"><img class="cover" src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/Machine-Learning.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-19</div><div class="title">机器学习笔记（9）无监督学习</div></div></a></div><div><a href="/kuhne.gitee.io/2022/05/15/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%888%EF%BC%89%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA/" title="机器学习笔记（8）支持向量机"><img class="cover" src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/Machine-Learning.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-15</div><div class="title">机器学习笔记（8）支持向量机</div></div></a></div><div><a href="/kuhne.gitee.io/2022/05/12/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%887%EF%BC%89%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/" title="机器学习笔记（7）机器学习系统设计"><img class="cover" src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/Machine-Learning.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-12</div><div class="title">机器学习笔记（7）机器学习系统设计</div></div></a></div><div><a href="/kuhne.gitee.io/2022/05/08/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%886%EF%BC%89%E7%AE%97%E6%B3%95%E6%94%B9%E8%BF%9B%E6%96%B9%E6%B3%95%E7%9A%84%E9%80%89%E6%8B%A9/" title="机器学习笔记（6） 改进算法的选择"><img class="cover" src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/Machine-Learning.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-08</div><div class="title">机器学习笔记（6） 改进算法的选择</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="/kuhne.gitee.io/img/head.jpg" onerror="this.onerror=null;this.src='/kuhne.gitee.io/img/head.jpg'" alt="avatar"/></div><div class="author-info__name">傅琨皓</div><div class="author-info__description"></div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/kuhne.gitee.io/archives/"><div class="headline">文章</div><div class="length-num">72</div></a></div><div class="card-info-data-item"><a href="/kuhne.gitee.io/tags/"><div class="headline">标签</div><div class="length-num">41</div></a></div><div class="card-info-data-item"><a href="/kuhne.gitee.io/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://gitee.com/kuhne/kuhne.gitee.io"><i class="fab fa-github"></i><span>来瞅瞅？</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=1064675347&amp;site=qq&amp;menu=yes" target="_blank" title="腾讯QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="mailto:1064675347@qq.com" target="_blank" title="微信"><i class="fab fa-weixin"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">机器学习笔记（12）机器学习应用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81OCR-%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="toc-text">一、OCR 问题描述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-OCR-%E4%B8%8E%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%B5%81%E6%B0%B4%E7%BA%BF-pipeline-%E4%BB%8B%E7%BB%8D"><span class="toc-text">1.1 OCR 与机器学习流水线 (pipeline) 介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3"><span class="toc-text">1.2 滑动窗口</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-1-%E8%A1%8C%E4%BA%BA%E6%A3%80%E6%B5%8B"><span class="toc-text">1.2.1 行人检测</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-2-%E6%96%87%E5%AD%97%E8%AF%86%E5%88%AB"><span class="toc-text">1.2.2 文字识别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-3-%E6%96%87%E5%AD%97%E5%88%86%E5%89%B2"><span class="toc-text">1.2.3 文字分割</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81-%E4%BA%BA%E5%B7%A5%E6%95%B0%E6%8D%AE%E5%90%88%E6%88%90"><span class="toc-text">二、 人工数据合成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E7%94%9F%E6%88%90%E5%9B%BE%E5%83%8F"><span class="toc-text">2.1 从零开始生成图像</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E4%BD%BF%E7%94%A8%E7%8E%B0%E6%9C%89%E6%A0%B7%E6%9C%AC%E7%94%9F%E6%88%90%E6%95%B0%E6%8D%AE%EF%BC%9A"><span class="toc-text">2.2 使用现有样本生成数据：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E4%BA%BA%E5%B7%A5%E7%94%9F%E6%88%90%E6%95%B0%E6%8D%AE%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">2.3 人工生成数据的注意事项</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%B8%8A%E9%99%90%E5%88%86%E6%9E%90"><span class="toc-text">三、上限分析</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/kuhne.gitee.io/2022/09/14/Linux-%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" title="Linux 服务器环境配置"><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/4c417afa91736428def17dcc96aa64b8.jpeg" onerror="this.onerror=null;this.src='/kuhne.gitee.io/img/404.jpg'" alt="Linux 服务器环境配置"/></a><div class="content"><a class="title" href="/kuhne.gitee.io/2022/09/14/Linux-%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" title="Linux 服务器环境配置">Linux 服务器环境配置</a><time datetime="2022-09-14T08:01:29.000Z" title="发表于 2022-09-14 16:01:29">2022-09-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/kuhne.gitee.io/2022/09/03/%E8%AE%BA%E6%96%87%E6%95%B4%E7%90%86%EF%BC%883%EF%BC%89Measuring-Compositional-Consistency-for-Video-Question-Answering/" title="论文整理（3）Measuring Compositional Consistency for Video Question Answering"><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/top2.png" onerror="this.onerror=null;this.src='/kuhne.gitee.io/img/404.jpg'" alt="论文整理（3）Measuring Compositional Consistency for Video Question Answering"/></a><div class="content"><a class="title" href="/kuhne.gitee.io/2022/09/03/%E8%AE%BA%E6%96%87%E6%95%B4%E7%90%86%EF%BC%883%EF%BC%89Measuring-Compositional-Consistency-for-Video-Question-Answering/" title="论文整理（3）Measuring Compositional Consistency for Video Question Answering">论文整理（3）Measuring Compositional Consistency for Video Question Answering</a><time datetime="2022-09-03T07:28:11.000Z" title="发表于 2022-09-03 15:28:11">2022-09-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/kuhne.gitee.io/2022/08/24/%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E6%95%B4%E7%90%86/" title="论文学习笔记整理"><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/dknjyLgQcEXhsuK.jpg" onerror="this.onerror=null;this.src='/kuhne.gitee.io/img/404.jpg'" alt="论文学习笔记整理"/></a><div class="content"><a class="title" href="/kuhne.gitee.io/2022/08/24/%E8%AE%BA%E6%96%87%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E6%95%B4%E7%90%86/" title="论文学习笔记整理">论文学习笔记整理</a><time datetime="2022-08-24T05:50:52.000Z" title="发表于 2022-08-24 13:50:52">2022-08-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/kuhne.gitee.io/2022/08/24/%E8%AE%BA%E6%96%87%E6%95%B4%E7%90%86%EF%BC%882%EF%BC%89VRDFormer-End-to-End-Video-Visual-Relation-Detection-With-Transformers/" title="论文整理（2）VRDFormer_End-to-End_Video_Visual_Relation_Detection_With_Transformers"><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/Snipaste_2022-08-24_13-40-49.png" onerror="this.onerror=null;this.src='/kuhne.gitee.io/img/404.jpg'" alt="论文整理（2）VRDFormer_End-to-End_Video_Visual_Relation_Detection_With_Transformers"/></a><div class="content"><a class="title" href="/kuhne.gitee.io/2022/08/24/%E8%AE%BA%E6%96%87%E6%95%B4%E7%90%86%EF%BC%882%EF%BC%89VRDFormer-End-to-End-Video-Visual-Relation-Detection-With-Transformers/" title="论文整理（2）VRDFormer_End-to-End_Video_Visual_Relation_Detection_With_Transformers">论文整理（2）VRDFormer_End-to-End_Video_Visual_Relation_Detection_With_Transformers</a><time datetime="2022-08-24T05:37:48.000Z" title="发表于 2022-08-24 13:37:48">2022-08-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/kuhne.gitee.io/2022/08/24/d2l-%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E7%9B%AE%E5%BD%95/" title="d2l-动手学深度学习笔记目录"><img src= "/kuhne.gitee.io/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/5e0499842d46ba7392ebef1e115543f0.jpeg" onerror="this.onerror=null;this.src='/kuhne.gitee.io/img/404.jpg'" alt="d2l-动手学深度学习笔记目录"/></a><div class="content"><a class="title" href="/kuhne.gitee.io/2022/08/24/d2l-%E5%8A%A8%E6%89%8B%E5%AD%A6%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E7%9B%AE%E5%BD%95/" title="d2l-动手学深度学习笔记目录">d2l-动手学深度学习笔记目录</a><time datetime="2022-08-24T05:01:24.000Z" title="发表于 2022-08-24 13:01:24">2022-08-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 傅琨皓</div><div class="footer_custom_text">欢迎来到<a href="https://kuhne.gitee.io/kuhne.gitee.io/">我的博客!</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/kuhne.gitee.io/js/utils.js"></script><script src="/kuhne.gitee.io/js/main.js"></script><script src="/kuhne.gitee.io/js/tw_cn.js"></script><script src="https://cdn1.tianli0.top/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://cdn.staticfile.org/instant.page/5.1.0/instantpage.min.js" type="module"></script><script src="https://cdn.staticfile.org/vanilla-lazyload/17.3.1/lazyload.iife.min.js"></script><script src="https://cdn.staticfile.org/node-snackbar/0.1.9/snackbar.min.js"></script><script src="/kuhne.gitee.io/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/KaTeX/0.15.3/katex.min.css"><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.15.2/contrib/copy-tex.min.js"></script><link rel="stylesheet" type="text/css" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.15.2/contrib/copy-tex.min.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'S47HOBqpgUCutu7Azmdww7o3-gzGzoHsz',
+      appKey: 'CGS1ktSYn9hr3dpj8vWHdHFz',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.staticfile.org/valine/1.4.18/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="https://jsdelivr.pai233.top/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script src="https://cdn1.tianli0.top/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

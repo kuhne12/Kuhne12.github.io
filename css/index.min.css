@@ -1,0 +1,115 @@
+@font-face{
+    font-family: 'MyFont';
+    src: url('https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/resource/JetBrainsMono-Medium.woff2');   
+}
+
+.fa-heart
+{
+	color:red;
+}
+
+.fa-qq
+{
+	color:#10a4ff;
+}
+
+.fa-weixin
+{
+	color:#00bf03;
+}
+
+.fa-alipay
+{
+	color:#4890f7;
+}
+
+.fa-rss
+{
+	color:#d68650;
+}
+
+#article-container code,#article-container pre
+{
+	font-family:MyFont!important;
+}
+
+#article-container figure.highlight,#article-container pre[class*=language-]
+{
+	background:var(--hl-bg);
+	color:var(--hl-color);
+}
+
+#article-container figure.highlight .highlight-tools
+{
+	background:var(--hltools-bg);
+	color:#a9a9a9;
+}
+
+#article-container figure.highlight .highlight-tools .code-lang
+{
+	font-size:.7rem;
+	left:50%!important;
+	-webkit-transform:translateX(-50%);
+	transform:translateX(-50%);
+}
+
+#article-container pre[class*=language-].line-numbers .line-numbers-rows>span:before
+{
+	color:var(--hlnumber-color);
+}
+
+#article-container pre[class*=language-]::-webkit-scrollbar-thumb
+{
+	background-color:#49b1f5!important;
+	background-image:0 25% 0 50% 0 75% 0!important;
+	border-radius:2em!important;
+}
+
+code[class*=language-],pre[class*=language-]
+{
+	word-wrap:normal;
+	background:#fafafa;
+	color:#90a4ae;
+	font-family:Roboto Mono,monospace;
+	font-size:1em;
+	-webkit-hyphens:none;
+	-ms-hyphens:none;
+	hyphens:none;
+	line-height:1.5em;
+	tab-size:4;
+	text-align:left;
+	white-space:pre;
+	word-break:normal;
+	word-spacing:normal;
+}
+
+code[class*=language-] ::selection,code[class*=language-]::selection,pre[class*=language-] ::selection,pre[class*=language-]::selection
+{
+	background:#cceae7;
+	color:#263238;
+}
+
+:not(pre)>code[class*=language-]
+{
+	border-radius:.2em;
+	white-space:normal;
+	padding:.1em;
+}
+
+pre[class*=language-]
+{
+	overflow:auto;
+	position:relative;
+	margin:.5em 0;
+	padding:1.25em 1em;
+}
+
+.language-css>code,.language-sass>code,.language-scss>code
+{
+	color:#f76d47;
+}
+
+[class*=language-] .namespace
+{
+	opacity:.7;
+}
