@@ -1,0 +1,516 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>机器学习作业 Chp7 | Kuhne</title><meta name="keywords" content="人工智能,机器学习,作业"><meta name="author" content="Kuhne"><meta name="copyright" content="Kuhne"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="吴恩达老师机器学习第七周作业、无监督学习、K-means、PCA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习作业 Chp7">
+<meta property="og:url" content="https://kuhne.gitee.io/kuhne.gitee.io/posts/478844cc.html">
+<meta property="og:site_name" content="Kuhne">
+<meta property="og:description" content="吴恩达老师机器学习第七周作业、无监督学习、K-means、PCA">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kuhne.gitee.io/kuhne.gitee.io/img/top3.jpg">
+<meta property="article:published_time" content="2022-05-22T07:51:25.000Z">
+<meta property="article:modified_time" content="2023-03-04T02:45:26.161Z">
+<meta property="article:author" content="Kuhne">
+<meta property="article:tag" content="人工智能">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="作业">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kuhne.gitee.io/kuhne.gitee.io/img/top3.jpg"><link rel="shortcut icon" href="/img/head2.png"><link rel="canonical" href="https://kuhne.gitee.io/kuhne.gitee.io/posts/478844cc"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.0.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.staticfile.org/node-snackbar/0.1.9/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://jsdelivr.pai233.top/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://jsdelivr.pai233.top/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '机器学习作业 Chp7',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-03-04 10:45:26'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/resource/JetBrainsMono-Medium.woff2"><link rel="stylesheet" href="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/resource/iconfont.min.css"><link rel="stylesheet" href="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/resource/index.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "/img/lazyload.gif" data-lazy-src="/img/head.jpg" onerror="onerror=null;src='/img/head.jpg'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">74</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-archive"></i><span> Blog</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-list-ul"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/pictures/"><i class="fa-fw fa fa-camera"></i><span> 图片</span></a></li><li><a class="site-page child" href="/talk/"><i class="fa-fw fas fa-comment-dots"></i><span> 说说</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/top3.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Kuhne</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-archive"></i><span> Blog</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-list-ul"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/pictures/"><i class="fa-fw fa fa-camera"></i><span> 图片</span></a></li><li><a class="site-page child" href="/talk/"><i class="fa-fw fas fa-comment-dots"></i><span> 说说</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">机器学习作业 Chp7</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-05-22T07:51:25.000Z" title="发表于 2022-05-22 15:51:25">2022-05-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-03-04T02:45:26.161Z" title="更新于 2023-03-04 10:45:26">2023-03-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>14分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="机器学习作业 Chp7"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>机器学习作业chp7</h1>
+<blockquote>
+<p>本次练习的第一部分将实现 K-means 聚类算法，并将其应用于图片压缩，第二部分将使用主成分分析（PCA）算法来找到人脸图像的低维表示。</p>
+</blockquote>
+<h2 id="一、K-means-聚类算法">一、K-means 聚类算法</h2>
+<p>这部分将实现 K-means 聚类算法，并将其应用于图片压缩。首先我们将从一个二维的数据集样本开始，了解 K-means 算法是如何工作的，之后通过K-means 算法将图像中的颜色减少到图中最常见的颜色，来达到压缩图片的目的。</p>
+<h3 id="1-1-实现-K-means-算法">1.1 实现 K-means 算法</h3>
+<p>K-means 算法是一个能自动地将相似的数据样本聚集在一起的方法，具体来说，给定一个训练集 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">{</mo><msup><mi>x</mi><mn>1</mn></msup><mo separator="true">,</mo><mo separator="true">⋅</mo><mo separator="true">⋅</mo><mo separator="true">⋅</mo><mtext>，</mtext><msup><mi>x</mi><mi>m</mi></msup><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{x^1,···，x^m\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mopen">{</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span></span></span></span></span><span class="mpunct">,⋅⋅⋅</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord cjk_fallback">，</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">m</span></span></span></span></span></span></span></span><span class="mclose">}</span></span></span></span> ，希望将它们分组到几个内聚的“集群”中。K-means 算法背后的思想其实是一个迭代的过程，从猜测聚类中心开始，不断地将样本分配给最近的聚类中心，然后根据样本分配重新计算聚类中心。</p>
+<p>算法大致过程如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 初始化聚类中心</span></span><br><span class="line">centroids = kMeansInitCentriods(X, k)</span><br><span class="line"><span class="comment"># 迭代更新聚类中心</span></span><br><span class="line"><span class="keyword">for</span> <span class="built_in">iter</span> <span class="keyword">in</span> <span class="built_in">range</span>(iterations):</span><br><span class="line">    <span class="comment"># 分配过程：将每个样本分配给最近的聚类中心，idx(i) 对应着 c^i，将聚类中心的索引分配给样本 i。</span></span><br><span class="line">    idx = findeClosestCentroids(X, centroids)</span><br><span class="line">    <span class="comment"># 移动聚类中心过程：基于聚类中心的分配计算均值。</span></span><br><span class="line">    centroids = computeMeans(X, idx, K)</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>算法内部的循环重复地执行两个步骤：</p>
+<ul>
+<li>将每个训练样本分配给最近的聚类中心</li>
+<li>使用分类结果重新计算每个聚类中心的均值</li>
+</ul>
+</blockquote>
+<p>注意：聚类的结果通常不是最理想的，取决于初试聚类中心的位置。因此在实现 K-means 算法时要随机初始化聚类中心，最后在得到的不同聚类结果中选择代价函数值最小的聚类结果。</p>
+<h4 id="1-1-1-寻找最近的聚类中心">1.1.1 寻找最近的聚类中心</h4>
+<p>在 K-means “聚类分配” 的过程中，算法将根据当前聚类中心的位置，把每一个训练样本分配给最近的聚类中心，特别地，对于每一个样本，我们设置</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msup><mi>c</mi><mi>i</mi></msup><mo>:</mo><mo>=</mo><mi>j</mi><mspace width="2em"/><mo stretchy="false">(</mo><mi mathvariant="normal">∣</mi><mi mathvariant="normal">∣</mi><msup><mi>x</mi><mi>i</mi></msup><mo>−</mo><msub><mi>μ</mi><mi>j</mi></msub><mi mathvariant="normal">∣</mi><msup><mi mathvariant="normal">∣</mi><mn>2</mn></msup><mtext>的值最小</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">c^i :=j\qquad (||x^i-\mu_j||^2 的值最小)
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8747em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8747em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1247em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span><span class="mspace" style="margin-right:2em;"></span><span class="mopen">(</span><span class="mord">∣∣</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8747em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.1502em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord">∣</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mord cjk_fallback">的值最小</span><span class="mclose">)</span></span></span></span></span></p>
+<p>其中，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>c</mi><mi>i</mi></msup></mrow><annotation encoding="application/x-tex">c^i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8247em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8247em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span></span></span></span></span></span></span></span> 是距离样本 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mi>i</mi></msup></mrow><annotation encoding="application/x-tex">x^i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8247em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8247em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span></span></span></span></span></span></span></span> 最近的聚类中心的索引，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">\mu_j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7167em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05724em;">j</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span></span></span></span> 是第 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi></mrow><annotation encoding="application/x-tex">j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.05724em;">j</span></span></span></span> 个聚类中心的位置。</p>
+<p>随机初始化聚类中心，并进行数据可视化：</p>
+<ul>
+<li>
+<p>代码编写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> scipy.io <span class="keyword">import</span> loadmat</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据可视化</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">plot</span>(<span class="params">ax, X</span>):</span><br><span class="line">    x1 = X[:, <span class="number">0</span>]</span><br><span class="line">    x2 = X[:, <span class="number">1</span>]</span><br><span class="line">    ax.scatter(x1, x2)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 随机初始化聚类中心</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">init_centroids</span>(<span class="params">X, k</span>):</span><br><span class="line">    m, n = X.shape</span><br><span class="line">    centroids = np.zeros((k, n))</span><br><span class="line">    <span class="comment"># n为数据的维度</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        x_min, x_max = np.<span class="built_in">min</span>(X[:, i]), np.<span class="built_in">max</span>(X[:, i])</span><br><span class="line">        <span class="comment"># 每一列生成 k 个随机数</span></span><br><span class="line">        centroids[:, i] = np.random.uniform(x_min, x_max, k)</span><br><span class="line">    <span class="keyword">return</span> centroids</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">matplotlib.use(<span class="string">&#x27;TkAgg&#x27;</span>)</span><br><span class="line">fig, ax = plt.subplots(figsize=(<span class="number">8</span>, <span class="number">6</span>))</span><br><span class="line"></span><br><span class="line">data = loadmat(<span class="string">&#x27;./dataset/ex7data2.mat&#x27;</span>)</span><br><span class="line">X = data[<span class="string">&#x27;X&#x27;</span>]</span><br><span class="line">k = <span class="number">3</span></span><br><span class="line"><span class="comment"># 可视化数据集</span></span><br><span class="line">plot(ax, X)</span><br><span class="line"><span class="comment"># 初始化聚类中心</span></span><br><span class="line">centroids = init_centroids(X, k)</span><br><span class="line">ax.scatter(centroids[:, <span class="number">0</span>], centroids[:, <span class="number">1</span>], c=<span class="string">&#x27;orange&#x27;</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>输出</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/20/113928-81a01.png" alt="随机初始化聚类中心"></p>
+</li>
+</ul>
+<p>分配样本给最近的聚类中心，并进行染色（代码接上）：</p>
+<ul>
+<li>
+<p>代码编写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 分配最近的聚类中心</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">find_centroids</span>(<span class="params">X, centroids</span>):</span><br><span class="line">    m, n = X.shape</span><br><span class="line">    c = np.zeros(m)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m):</span><br><span class="line">        <span class="built_in">min</span> = <span class="number">100</span></span><br><span class="line">        index = <span class="number">0</span></span><br><span class="line">        <span class="comment"># enumerate 是可迭代对象，目的是得到迭代对象的索引值 i</span></span><br><span class="line">        <span class="keyword">for</span> j, item <span class="keyword">in</span> <span class="built_in">enumerate</span>(centroids):</span><br><span class="line">            temp = np.linalg.norm(np.power(item - X[i, :], <span class="number">2</span>))</span><br><span class="line">            <span class="keyword">if</span> temp &lt; <span class="built_in">min</span>:</span><br><span class="line">                <span class="built_in">min</span> = temp</span><br><span class="line">                c[i] = j</span><br><span class="line">    <span class="keyword">return</span> c</span><br><span class="line"></span><br><span class="line"><span class="comment"># 样本染色</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">sample_dyeing</span>(<span class="params">X, c, k, ax</span>):</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(k):</span><br><span class="line">        cluster = X[np.where(c == i)[<span class="number">0</span>], :]</span><br><span class="line">        ax.scatter(cluster[:, <span class="number">0</span>], cluster[:, <span class="number">1</span>])</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 分配样本</span></span><br><span class="line">c = find_centroids(X, centroids)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 样本染色</span></span><br><span class="line">sample_dyeing(X, c, k, ax)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>输出结果（橙色是聚类中心）：</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/20/114049-438c0.png" alt="样本分配"></p>
+</li>
+</ul>
+<h4 id="1-1-2-计算聚类中心均值">1.1.2 计算聚类中心均值</h4>
+<p>完成了聚类中心的<strong>随机初始化</strong>和<strong>样本分配</strong>的功能，接下来就要迭代<strong>计算样本的均值</strong>，并<strong>移动聚类中心</strong>。特别地，对于每一个聚类中心 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> ，我们设置</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>μ</mi><mi>k</mi></msub><mo>:</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mi mathvariant="normal">∣</mi><msub><mi>C</mi><mi>k</mi></msub><mi mathvariant="normal">∣</mi></mrow></mfrac><munder><mo>∑</mo><mrow><mi>i</mi><mo>∈</mo><msub><mi>C</mi><mi>k</mi></msub></mrow></munder><msup><mi>x</mi><mi>i</mi></msup></mrow><annotation encoding="application/x-tex">\mu_k:=\frac{1}{|C_k|}\sum_{i \in C_k}x^i
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.7216em;vertical-align:-1.4002em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.936em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.05em;"><span style="top:-1.8557em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mrel mtight">∈</span><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3448em;"><span style="top:-2.3488em;margin-left:-0.0715em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1512em;"><span></span></span></span></span></span></span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.4002em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8747em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p>其中，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">C_k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.03148em;">k</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> 是分配给聚类中心 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span> 的样本集，具体来说，如果样本 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">x^3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>5</mn></msup></mrow><annotation encoding="application/x-tex">x^5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span></span></span></span> 被分配给聚类中心 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">k=2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> ，然后就应该更新 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mn>2</mn></msub><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo stretchy="false">(</mo><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><msup><mi>x</mi><mn>5</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\mu_2 = \frac{1}{2}(x^3+x^5)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">μ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.1901em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8451em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">5</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span> 。</p>
+<ul>
+<li>
+<p>代码编写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 计算聚类中心的平均值</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">compute_centroids</span>(<span class="params">X, c, k</span>):</span><br><span class="line">    n = X.shape[<span class="number">1</span>]</span><br><span class="line">    centroids = np.zeros((k, n))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(k):</span><br><span class="line">        indices = np.where(c == i)</span><br><span class="line">        centroids[i, :] = (np.<span class="built_in">sum</span>(X[indices, :], axis=<span class="number">1</span>)) / <span class="built_in">len</span>(indices[<span class="number">0</span>])</span><br><span class="line">    <span class="keyword">return</span> centroids</span><br><span class="line"></span><br><span class="line">new_centroids = compute_centroids(X, c, k)</span><br><span class="line"><span class="built_in">print</span>(new_centroids)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[[<span class="number">5.82344555</span> <span class="number">2.76078441</span>]</span><br><span class="line"> [<span class="number">2.02980536</span> <span class="number">0.89580445</span>]</span><br><span class="line"> [<span class="number">2.44203817</span> <span class="number">3.57181211</span>]]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="1-2-在数据集上应用-K-means-算法">1.2 在数据集上应用 K-means 算法</h3>
+<p>完成了 <code>find_centroids()</code> 和 <code>compute_centroids()</code> 函数后，下一步将把 K-means 算法应用于二维数据集上，来帮助我们理解 K-means 算法是如何工作的。</p>
+<ul>
+<li>
+<p>代码编写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># K-means 算法</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run_k_means</span>(<span class="params">X, init_centroids, max_iters</span>):</span><br><span class="line">    m, n = X.shape</span><br><span class="line">    centroids = init_centroids</span><br><span class="line">    c = np.zeros(m)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(max_iters):</span><br><span class="line">        c = find_centroids(X, centroids)</span><br><span class="line">        centroids = compute_centroids(X, c, k)</span><br><span class="line">    <span class="keyword">return</span> centroids, c</span><br><span class="line"></span><br><span class="line">new_centroids, c = run_k_means(X, centroids, <span class="number">100</span>)</span><br><span class="line">ax.scatter(new_centroids[:, <span class="number">0</span>], new_centroids[:, <span class="number">1</span>], c=<span class="string">&#x27;orange&#x27;</span>)</span><br><span class="line"><span class="comment"># 样本染色</span></span><br><span class="line">sample_dyeing(X, c, k, ax)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>输出（橙色点为聚类中心）：</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/20/154320-f48c1.png" alt="K-means 聚类结果"></p>
+</li>
+</ul>
+<h3 id="1-3-随机初始化聚类中心">1.3 随机初始化聚类中心</h3>
+<blockquote>
+<p>这部分已经在上面完成编写，不再赘述。</p>
+</blockquote>
+<h3 id="1-4-使用-K-means-算法实现图片压缩">1.4 使用 K-means 算法实现图片压缩</h3>
+<p>这部分将把 K-means 算法应用于图片压缩。在一张 24 位色彩图像中，每一个颜色都是用 3 个 8 bit 的无符号整数表示的（0-255），这三个整数代表着红、绿、蓝三种颜色的强度值，这种编码通常被称为 <strong>RGB 编码</strong>。一般图像中包含了成千上万的颜色，这部分练习将会把图片中的颜色数量减少至 16 种。</p>
+<p>通过这种方式可以有效地表示（压缩）图片，特别地，我们只需要存储 16 种选择的 RGB 颜色值，现在每张图片只需要在该像素位置存储颜色的索引（因为只用 4 bit 就能表示 16 个值）。我们将使用 K-means 算法挑选出 16 种将被用于表示压缩图片的颜色，具体来说，我们将把原始图像的每一个像素作为一个数据样本，使用 K-means 算法在三维 RGB 空间中找到最适合分组(聚类)像素的 16 种颜色。计算完图像上聚类中心后，将使用 16 种颜色替换原始图像中的像素。</p>
+<h4 id="1-3-1-在像素上应用-K-means-算法">1.3.1 在像素上应用 K-means 算法</h4>
+<p>首先我们可以使用第三方库导入图像，取得图像的 RGB 值，随后将图片 reshape 为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>∗</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">m * 3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span> 维的矩阵（其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>128</mn><mo>∗</mo><mn>128</mn><mo>=</mo><mn>16384</mn></mrow><annotation encoding="application/x-tex">m=128*128=16384</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">128</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">128</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">16384</span></span></span></span>），最后调用 K-means 算法。找到最合适的 16 种表示图像的颜色后，就可以使用 <code>find_centroids()</code>函数，将每一个像素的位置分配给距离最新的聚类中心，这让我们能使用每个像素的聚类中心来表示原始图像。</p>
+<ul>
+<li>
+<p>代码编写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显示图片</span></span><br><span class="line">img_data = loadmat(<span class="string">&#x27;./dataset/bird_small.mat&#x27;</span>)</span><br><span class="line">A = img_data[<span class="string">&#x27;A&#x27;</span>]</span><br><span class="line">plt.imshow(A)</span><br><span class="line"><span class="comment"># 关闭坐标轴</span></span><br><span class="line">plt.axis(<span class="string">&#x27;off&#x27;</span>)</span><br><span class="line"><span class="comment"># 防止输出图像卡住</span></span><br><span class="line">plt.show(block=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>输出结果</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/21/131526-447e7.png" alt="原图"></p>
+<p>这段代码输出的是原图，可以看到色彩较为丰富，接下来需要进行颜色压缩，将颜色种类降至 16 种</p>
+</li>
+<li>
+<p>代码编写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 图片压缩函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">img_compress</span>(<span class="params">A</span>):</span><br><span class="line">    <span class="comment"># 将图片 reshape 为 m * 3 维的矩阵</span></span><br><span class="line">    X = np.reshape(A, (A.shape[<span class="number">0</span>] * A.shape[<span class="number">1</span>], A.shape[<span class="number">2</span>]))</span><br><span class="line">    <span class="comment"># 初始化聚类中心，类型为 16 种</span></span><br><span class="line">    initial_centroids = init_centroids(X, <span class="number">16</span>)</span><br><span class="line">    <span class="comment"># 运行 K-means 算法进行聚类</span></span><br><span class="line">    centroids, c = run_k_means(X, initial_centroids, <span class="number">16</span>, <span class="number">10</span>)</span><br><span class="line">    <span class="comment"># 根据聚类结果，为聚类中心分配像素</span></span><br><span class="line">    c = find_centroids(X, centroids)</span><br><span class="line">    <span class="comment"># 将像素进行映射，注意 c 中的数据类型为 float64，我们需要将其转为 int 类型</span></span><br><span class="line">    X_recover = centroids[c.astype(<span class="built_in">int</span>), :]</span><br><span class="line">    <span class="comment"># 将 m * 3 维的矩阵 reshape 回去</span></span><br><span class="line">    X_recover = np.reshape(X_recover, (A.shape[<span class="number">0</span>], A.shape[<span class="number">1</span>], A.shape[<span class="number">2</span>]))</span><br><span class="line">    <span class="comment"># 如果颜色强度为 float，则matplotlib期望其范围为0到1;</span></span><br><span class="line">    <span class="comment"># 如果是int，则预期为0到255。</span></span><br><span class="line">    <span class="comment"># 所以这里有两种方式：</span></span><br><span class="line">    <span class="comment"># 方式1:</span></span><br><span class="line">    <span class="comment"># plt.imshow(X_recover.astype(int))</span></span><br><span class="line">    <span class="comment"># 方式2:</span></span><br><span class="line">    plt.imshow(X_recover / <span class="number">255</span>)</span><br><span class="line"></span><br><span class="line">    plt.axis(<span class="string">&#x27;off&#x27;</span>)</span><br><span class="line">    plt.show(block=<span class="literal">True</span>)</span><br><span class="line">    </span><br><span class="line">img_data = loadmat(<span class="string">&#x27;./dataset/bird_small.mat&#x27;</span>)</span><br><span class="line">A = img_data[<span class="string">&#x27;A&#x27;</span>]</span><br><span class="line">img_compress(A)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>输出结果</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/21/133509-2ddde.png" alt="压缩图像"></p>
+<p>可以看到图片压缩后的效果，这种压缩是通过分配聚类中心完成的，具体来说，可以把<strong>分配给聚类中心的像素平均值</strong>替换每个位置的像素。从上图可以看出，即使颜色数量被压缩了，图像仍然保留了大部分的原始特征。</p>
+</li>
+</ul>
+<h3 id="1-5-使用自己的图片进行压缩">1.5 使用自己的图片进行压缩</h3>
+<ul>
+<li>
+<p>代码编写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 用这个库把图片转为矩阵</span></span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line">img_data = Image.<span class="built_in">open</span>(<span class="string">&#x27;./dataset/img1.png&#x27;</span>)</span><br><span class="line">A = np.asarray(img_data)</span><br><span class="line">img_compress(A)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>输出结果</p>
+<p>原图（1.41 MB）：</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/21/145303-8345b.png" alt="原图"></p>
+<p>压缩后（409 KB）：</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/21/145312-78a33.png" alt="压缩图片"></p>
+<blockquote>
+<p>终于做出来一个看起来可以用的东西了，虽然运行速度特别慢</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="二、主成分分析（PCA-算法）">二、主成分分析（PCA 算法）</h2>
+<p>这部分将使用 PCA 算法实现数据降维。</p>
+<h3 id="2-1-数据样本可视化">2.1 数据样本可视化</h3>
+<p>为了更好地理解 PCA 算法的工作，首先将从一个 2 维的数据数据集开始练习。这部分将可视化数据集，观察使用 PCA 将数据从 2 维降低到 1 维后发生了什么。实际上，我们可能需要将 256 维的数据降低到 50 维，但是使用低维的数据可以让我们更好地可视化算法。</p>
+<ul>
+<li>
+<p>代码编写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> scipy.io <span class="keyword">import</span> loadmat</span><br><span class="line"></span><br><span class="line">data = loadmat(<span class="string">&#x27;./dataset/ex7data1.mat&#x27;</span>)</span><br><span class="line">X = data[<span class="string">&#x27;X&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据可视化</span></span><br><span class="line">fig, ax = plt.subplots(figsize=(<span class="number">12</span>, <span class="number">8</span>))</span><br><span class="line">ax.scatter(X[:, <span class="number">0</span>], X[:, <span class="number">1</span>])</span><br><span class="line">plt.show(block=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>输出</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/21/150626-1b30d.png" alt="数据可视化"></p>
+</li>
+</ul>
+<h3 id="2-2-实现PCA">2.2 实现PCA</h3>
+<p>这部分将实现 PCA 算法。</p>
+<blockquote>
+<p>PCA 算法由两部分的计算组成：</p>
+<ul>
+<li>计算数据的<strong>协方差矩阵</strong></li>
+<li>使用线性代数函数库中的方法去<strong>计算特征向量</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>U</mi><mn>1</mn></msub><mo separator="true">,</mo><msub><mi>U</mi><mn>1</mn></msub><mo separator="true">,</mo><mo separator="true">⋅</mo><mo separator="true">⋅</mo><mo separator="true">⋅</mo><mo separator="true">,</mo><msub><mi>U</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">U_1,U_1,···,U_n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mpunct">,⋅⋅⋅,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
+</ul>
+</blockquote>
+<p>在开始实现 PCA 算法之前，需要将数据减去每个特征的平均值来<strong>规范化数据</strong>，同时要把每个维度的<strong>数值缩放</strong>到相同范围。</p>
+<ul>
+<li>
+<p>代码编写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">data_normalize</span>(<span class="params">X</span>):</span><br><span class="line">    <span class="keyword">return</span> (X - X.mean(axis=<span class="number">0</span>)) / X.std(axis=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>数据被规范化后就可以运行 PCA 算法计算主成分了。首先应该去计算数据的协方差矩阵：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi mathvariant="normal">Σ</mi><mo>=</mo><mfrac><mn>1</mn><mi>m</mi></mfrac><msup><mi>X</mi><mi>T</mi></msup><mi>X</mi></mrow><annotation encoding="application/x-tex">\Sigma=\frac{1}{m}X^TX
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Σ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0074em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">m</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.13889em;">T</span></span></span></span></span></span></span></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span></span></span></span></span></p>
+<p>其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span></span></span></span> 是数据矩阵，每一行表示一个样本，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">m</span></span></span></span> 代表样本数量。（<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Σ</mi></mrow><annotation encoding="application/x-tex">\Sigma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">Σ</span></span></span></span> 是一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>∗</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">n*n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4653em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 的矩阵，并不是求和操作）</p>
+<ul>
+<li>
+<p>代码编写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">compute_cov</span>(<span class="params">X</span>):</span><br><span class="line">    m = X.shape[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">return</span> np.dot(X.T, X) / m</span><br><span class="line"></span><br><span class="line"><span class="comment"># 规范化数据</span></span><br><span class="line">X = data_normalize(X)</span><br><span class="line"><span class="comment"># 计算协方差矩阵</span></span><br><span class="line">cov = compute_cov(X)</span><br><span class="line"><span class="built_in">print</span>(cov)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[[<span class="number">1.</span>         <span class="number">0.73553038</span>]</span><br><span class="line"> [<span class="number">0.73553038</span> <span class="number">1.</span>        ]]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>协方差矩阵计算完成后，就可以使用 <code>numpy</code> 线性代数函数库 <code>linalg</code> 中的 <code>svd()</code> 函数来计算主成分。调用 <code>svd</code> 函数会返回三个数据，<code>U,S,V</code> ，其中 <code>U</code> 包含了主成分，<code>S</code> 中包含了一个对角矩阵。</p>
+<ul>
+<li>
+<p>代码编写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">pca</span>(<span class="params">X</span>):</span><br><span class="line">    cov = compute_cov(X)</span><br><span class="line">    U, S, V = np.linalg.svd(cov)</span><br><span class="line">    <span class="keyword">return</span> U, S, V</span><br><span class="line"></span><br><span class="line">U, S, V = pca(X)</span><br><span class="line"><span class="built_in">print</span>(U)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[[-<span class="number">0.70710678</span> -<span class="number">0.70710678</span>]</span><br><span class="line"> [-<span class="number">0.70710678</span>  <span class="number">0.70710678</span>]]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="2-3-使用-PCA">2.3 使用 PCA</h3>
+<p>主成分 ( U ) 计算完成后，就可以通过将每个样本投影到低维空间来降低数据集的特征维度，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mi>i</mi></msup><mo>→</mo><msup><mi>z</mi><mi>i</mi></msup></mrow><annotation encoding="application/x-tex">x^i \rightarrow z^i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8247em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8247em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8247em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.04398em;">z</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8247em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span></span></span></span></span></span></span></span> 。</p>
+<h4 id="2-3-1-使用-PCA-进行数据降维">2.3.1 使用 PCA 进行数据降维</h4>
+<p>特别地，如果我们正在使用学习算法（比如线性回归、神经网络），我们可以使用投影后的数据来进行模型训练，是用投影后的数据可以让模型的训练速度更快。</p>
+<p>因为是将数据降维至一维，所以取特征向量的第一列，计算投影样本 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi></mrow><annotation encoding="application/x-tex">z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.04398em;">z</span></span></span></span> 。（虽然第一列都是负数，但是并不影响，因为我们得到的是向量，正负只影响方向的正反）</p>
+<ul>
+<li>
+<p>代码编写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">data_map</span>(<span class="params">X, U, k</span>):</span><br><span class="line">    U_reduce = U[:, :k]</span><br><span class="line">    <span class="keyword">return</span> np.dot(X, U_reduce)</span><br><span class="line"></span><br><span class="line">data_reduce = data_map(X, U, k=<span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(data_reduce)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[[ <span class="number">1.49631261</span>]</span><br><span class="line"> [-<span class="number">0.92218067</span>]</span><br><span class="line">	`</span><br><span class="line"> 	·</span><br><span class="line">	·</span><br><span class="line"> [ <span class="number">0.36792871</span>]</span><br><span class="line"> [-<span class="number">1.44264131</span>]]</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="2-3-2-重建近似数据">2.3.2 重建近似数据</h4>
+<p>将数据投影到低维数据后，我们可以近似地将数据进行恢复，通过将低维数据投影回高维空间。</p>
+<ul>
+<li>
+<p>代码编写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># k 代表当前维度数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">data_recover</span>(<span class="params">X_reduce, U, k</span>):</span><br><span class="line">    U_reduce = U[:, :k]</span><br><span class="line">    <span class="keyword">return</span> np.dot(X_reduce, U_reduce.T)</span><br><span class="line">    </span><br><span class="line">recover = data_recover(data_reduce, U, k=<span class="number">1</span>)</span><br><span class="line"><span class="built_in">print</span>(recover)</span><br><span class="line">plt.scatter(recover[:, <span class="number">0</span>], recover[:, <span class="number">1</span>], c=<span class="string">&#x27;r&#x27;</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>输出</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[[-<span class="number">1.05805279</span> -<span class="number">1.05805279</span>]</span><br><span class="line"> [ <span class="number">0.65208021</span>  <span class="number">0.65208021</span>]</span><br><span class="line">	·</span><br><span class="line"> 	·</span><br><span class="line"> 	·</span><br><span class="line"> [-<span class="number">0.26016489</span> -<span class="number">0.26016489</span>]</span><br><span class="line"> [ <span class="number">1.02010145</span>  <span class="number">1.02010145</span>]]</span><br></pre></td></tr></table></figure>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/21/184748-edb20.png" alt="image-20220521184748363"></p>
+</li>
+</ul>
+<h3 id="2-4-在人脸图像上使用-PCA-算法">2.4 在人脸图像上使用 PCA 算法</h3>
+<p>这部分将对人脸图像使用 PCA 算法，来观察在如何在实践中应用数据降维。在数据集中包含了数组 X，每一行都表示一张 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>32</mn><mo>∗</mo><mn>32</mn></mrow><annotation encoding="application/x-tex">32*32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">32</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">32</span></span></span></span> 的黑白照片。</p>
+<p>首先将数据集中的数据进行可视化，随机选取 100 张人脸</p>
+<ul>
+<li>
+<p>代码编写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">show_face_img</span>(<span class="params">X</span>):</span><br><span class="line">    <span class="comment"># 随机选 100 个</span></span><br><span class="line">    grid_size = <span class="built_in">int</span>(np.sqrt(X.shape[<span class="number">1</span>]))</span><br><span class="line">    sample_idx = np.random.choice(np.array(X).shape[<span class="number">0</span>], <span class="number">100</span>)</span><br><span class="line">    sample_img = X[sample_idx, :]</span><br><span class="line">    fig, ax = plt.subplots(nrows=<span class="number">10</span>, ncols=<span class="number">10</span>, figsize=(<span class="number">12</span>, <span class="number">8</span>), sharex=<span class="literal">True</span>, sharey=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">for</span> r <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">            ax[r, c].matshow(np.array(sample_img[<span class="number">10</span> * r + c].reshape((grid_size, grid_size))).T)</span><br><span class="line">            plt.xticks(np.array([]))</span><br><span class="line">            plt.yticks(np.array([]))</span><br><span class="line"></span><br><span class="line">    plt.show(block=<span class="literal">True</span>)</span><br><span class="line">    </span><br><span class="line">face_data = loadmat(<span class="string">&#x27;./dataset/ex7faces.mat&#x27;</span>)</span><br><span class="line">X = face_data[<span class="string">&#x27;X&#x27;</span>]</span><br><span class="line">show_face_img(X)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>输出</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/21/220415-04a33.png" alt="原始图像"></p>
+</li>
+</ul>
+<p>为了在人脸图像上使用 PCA 算法，我们首先需要从数据矩阵中减去每个特征的平均值来标准化数据集。运行 PCA 算法后，将获得数据集的主成分，注意，在矩阵 U 中的每一个成分都是一个长度为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> 的向量（在人脸数据集中，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>1024</mn></mrow><annotation encoding="application/x-tex">n=1024</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1024</span></span></span></span>）。我们可以通过将这些主要成分，重新组合成一个32 × 32的矩阵，这个矩阵对应于原始数据集中的像素。</p>
+<ul>
+<li>
+<p>代码编写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据标准化</span></span><br><span class="line">X = data_normalize(X)</span><br><span class="line"><span class="comment"># 执行 PCA 算法，获取特征</span></span><br><span class="line">U, S, V = pca(X)</span><br><span class="line"><span class="comment"># 将原图像降维至 100 像素</span></span><br><span class="line">data_reduce = data_map(X, U, <span class="number">100</span>)</span><br><span class="line"><span class="comment"># 将降维后的图片输出</span></span><br><span class="line">show_face_img(data_reduce)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>输出</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/22/123228-943fd.png" alt="降维图像"></p>
+</li>
+</ul>
+<p>为了理解降维的过程中，数据有产生什么损失，我们可以通过数据投影再次把数据重构回去。</p>
+<ul>
+<li>
+<p>代码编写</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 原始数据重构</span></span><br><span class="line">recover = data_recover(data_reduce, U, <span class="number">100</span>)</span><br><span class="line">show_face_img(recover)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>输出</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/05/22/153534-b7529.png" alt="数据恢复"></p>
+</li>
+</ul>
+<p>从重构的结果来看，原始图像的大致结构和人脸的外观被大致保留了，但是也失去了一些细节，而这可以让数据的容量大大减小（小于原来的十分之一），显著地加速学习算法的速率。比如，如果想要训练神经网络来实现人脸识别，我们可以先将输入的图片降维至 100 个像素再进行模型训练，而不是直接使用原始输入的图像。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Kuhne</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://kuhne.gitee.io/kuhne.gitee.io/posts/478844cc.html">https://kuhne.gitee.io/kuhne.gitee.io/posts/478844cc.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://kuhne.gitee.io/kuhne.gitee.io" target="_blank">Kuhne</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">人工智能</a><a class="post-meta__tags" href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a><a class="post-meta__tags" href="/tags/%E4%BD%9C%E4%B8%9A/">作业</a></div><div class="post_share"></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/e1342ca3.html"><img class="prev-cover" src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/Machine-Learning.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">机器学习笔记（10）异常检测和推荐系统</div></div></a></div><div class="next-post pull-right"><a href="/posts/34a996a1.html"><img class="next-cover" src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/Machine-Learning.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">机器学习笔记（9）无监督学习</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/d737595d.html" title="机器学习作业 Chp8"><img class="cover" src= "/img/lazyload.gif" data-lazy-src="/img/top1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-27</div><div class="title">机器学习作业 Chp8</div></div></a></div><div><a href="/posts/c81fb0eb.html" title="机器学习作业-Chp6"><img class="cover" src= "/img/lazyload.gif" data-lazy-src="/img/top3.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-17</div><div class="title">机器学习作业-Chp6</div></div></a></div><div><a href="/posts/a98625e0.html" title="机器学习作业 Chp5"><img class="cover" src= "/img/lazyload.gif" data-lazy-src="/img/top3.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-11</div><div class="title">机器学习作业 Chp5</div></div></a></div><div><a href="/posts/de811576.html" title="机器学习作业 Chp4"><img class="cover" src= "/img/lazyload.gif" data-lazy-src="/img/top3.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-07</div><div class="title">机器学习作业 Chp4</div></div></a></div><div><a href="/posts/40e580d5.html" title="机器学习作业 Chp3"><img class="cover" src= "/img/lazyload.gif" data-lazy-src="/img/top5.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-05-05</div><div class="title">机器学习作业 Chp3</div></div></a></div><div><a href="/posts/37e2b043.html" title="机器学习作业 Chp2"><img class="cover" src= "/img/lazyload.gif" data-lazy-src="/img/top3.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-24</div><div class="title">机器学习作业 Chp2</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "/img/lazyload.gif" data-lazy-src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/head.jpg'" alt="avatar"/></div><div class="author-info__name">Kuhne</div><div class="author-info__description"></div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">74</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://gitee.com/kuhne/kuhne.gitee.io"><i class="fab fa-github"></i><span>来瞅瞅？</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=1064675347&amp;site=qq&amp;menu=yes" target="_blank" title="腾讯QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="mailto:1064675347@qq.com" target="_blank" title="微信"><i class="fab fa-weixin"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">机器学习作业chp7</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81K-means-%E8%81%9A%E7%B1%BB%E7%AE%97%E6%B3%95"><span class="toc-text">一、K-means 聚类算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%AE%9E%E7%8E%B0-K-means-%E7%AE%97%E6%B3%95"><span class="toc-text">1.1 实现 K-means 算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-1-%E5%AF%BB%E6%89%BE%E6%9C%80%E8%BF%91%E7%9A%84%E8%81%9A%E7%B1%BB%E4%B8%AD%E5%BF%83"><span class="toc-text">1.1.1 寻找最近的聚类中心</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-2-%E8%AE%A1%E7%AE%97%E8%81%9A%E7%B1%BB%E4%B8%AD%E5%BF%83%E5%9D%87%E5%80%BC"><span class="toc-text">1.1.2 计算聚类中心均值</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E5%9C%A8%E6%95%B0%E6%8D%AE%E9%9B%86%E4%B8%8A%E5%BA%94%E7%94%A8-K-means-%E7%AE%97%E6%B3%95"><span class="toc-text">1.2 在数据集上应用 K-means 算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E9%9A%8F%E6%9C%BA%E5%88%9D%E5%A7%8B%E5%8C%96%E8%81%9A%E7%B1%BB%E4%B8%AD%E5%BF%83"><span class="toc-text">1.3 随机初始化聚类中心</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E4%BD%BF%E7%94%A8-K-means-%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0%E5%9B%BE%E7%89%87%E5%8E%8B%E7%BC%A9"><span class="toc-text">1.4 使用 K-means 算法实现图片压缩</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-1-%E5%9C%A8%E5%83%8F%E7%B4%A0%E4%B8%8A%E5%BA%94%E7%94%A8-K-means-%E7%AE%97%E6%B3%95"><span class="toc-text">1.3.1 在像素上应用 K-means 算法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-%E4%BD%BF%E7%94%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E5%9B%BE%E7%89%87%E8%BF%9B%E8%A1%8C%E5%8E%8B%E7%BC%A9"><span class="toc-text">1.5 使用自己的图片进行压缩</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90%EF%BC%88PCA-%E7%AE%97%E6%B3%95%EF%BC%89"><span class="toc-text">二、主成分分析（PCA 算法）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%95%B0%E6%8D%AE%E6%A0%B7%E6%9C%AC%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="toc-text">2.1 数据样本可视化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%AE%9E%E7%8E%B0PCA"><span class="toc-text">2.2 实现PCA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E4%BD%BF%E7%94%A8-PCA"><span class="toc-text">2.3 使用 PCA</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-1-%E4%BD%BF%E7%94%A8-PCA-%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E9%99%8D%E7%BB%B4"><span class="toc-text">2.3.1 使用 PCA 进行数据降维</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-2-%E9%87%8D%E5%BB%BA%E8%BF%91%E4%BC%BC%E6%95%B0%E6%8D%AE"><span class="toc-text">2.3.2 重建近似数据</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E5%9C%A8%E4%BA%BA%E8%84%B8%E5%9B%BE%E5%83%8F%E4%B8%8A%E4%BD%BF%E7%94%A8-PCA-%E7%AE%97%E6%B3%95"><span class="toc-text">2.4 在人脸图像上使用 PCA 算法</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/8d037627.html" title="Git 及 GitHub 常用命令记录"><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2023/02/27/20230227141226-160f64.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git 及 GitHub 常用命令记录"/></a><div class="content"><a class="title" href="/posts/8d037627.html" title="Git 及 GitHub 常用命令记录">Git 及 GitHub 常用命令记录</a><time datetime="2023-02-27T06:08:31.000Z" title="发表于 2023-02-27 14:08:31">2023-02-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/a6d8a9c3.html" title="个人常用 Linux 命令"><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2023/02/26/20230226105141-94929b.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="个人常用 Linux 命令"/></a><div class="content"><a class="title" href="/posts/a6d8a9c3.html" title="个人常用 Linux 命令">个人常用 Linux 命令</a><time datetime="2023-02-26T02:47:48.000Z" title="发表于 2023-02-26 10:47:48">2023-02-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/3b91aa4a.html" title="Linux 服务器环境配置"><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/4c417afa91736428def17dcc96aa64b8.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux 服务器环境配置"/></a><div class="content"><a class="title" href="/posts/3b91aa4a.html" title="Linux 服务器环境配置">Linux 服务器环境配置</a><time datetime="2022-09-14T08:01:29.000Z" title="发表于 2022-09-14 16:01:29">2022-09-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/165b6b1f.html" title="论文整理（3）Measuring Compositional Consistency for Video Question Answering"><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/top2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文整理（3）Measuring Compositional Consistency for Video Question Answering"/></a><div class="content"><a class="title" href="/posts/165b6b1f.html" title="论文整理（3）Measuring Compositional Consistency for Video Question Answering">论文整理（3）Measuring Compositional Consistency for Video Question Answering</a><time datetime="2022-09-03T07:28:11.000Z" title="发表于 2022-09-03 15:28:11">2022-09-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22673bc3.html" title="论文学习笔记整理"><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/dknjyLgQcEXhsuK.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文学习笔记整理"/></a><div class="content"><a class="title" href="/posts/22673bc3.html" title="论文学习笔记整理">论文学习笔记整理</a><time datetime="2022-08-24T05:50:52.000Z" title="发表于 2022-08-24 13:50:52">2022-08-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Kuhne</div><div class="footer_custom_text">欢迎来到<a href="https://kuhne.gitee.io/kuhne.gitee.io/">我的博客!</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn1.tianli0.top/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://cdn.staticfile.org/instant.page/5.1.0/instantpage.min.js" type="module"></script><script src="https://cdn.staticfile.org/vanilla-lazyload/17.3.1/lazyload.iife.min.js"></script><script src="https://cdn.staticfile.org/node-snackbar/0.1.9/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/KaTeX/0.15.3/katex.min.css"><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.15.2/contrib/copy-tex.min.js"></script><link rel="stylesheet" type="text/css" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.15.2/contrib/copy-tex.min.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'S47HOBqpgUCutu7Azmdww7o3-gzGzoHsz',
+      appKey: 'CGS1ktSYn9hr3dpj8vWHdHFz',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.staticfile.org/valine/1.4.18/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="https://jsdelivr.pai233.top/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script src="https://cdn1.tianli0.top/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

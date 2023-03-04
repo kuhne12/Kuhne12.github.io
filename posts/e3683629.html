@@ -1,0 +1,439 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>cS231n 学习笔记（1）knn 及线性分类器 | Kuhne</title><meta name="keywords" content="计算机视觉,深度学习"><meta name="author" content="Kuhne"><meta name="copyright" content="Kuhne"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="图像分类问题 &#x2F; k-最近邻分类器 &#x2F; 超参数的选择 &#x2F; 线性分类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cS231n 学习笔记（1）knn 及线性分类器">
+<meta property="og:url" content="https://kuhne.gitee.io/kuhne.gitee.io/posts/e3683629.html">
+<meta property="og:site_name" content="Kuhne">
+<meta property="og:description" content="图像分类问题 &#x2F; k-最近邻分类器 &#x2F; 超参数的选择 &#x2F; 线性分类">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/2901e2f51d643b321c61e158805fe248.jpeg">
+<meta property="article:published_time" content="2022-06-09T09:08:41.000Z">
+<meta property="article:modified_time" content="2022-07-15T10:09:24.000Z">
+<meta property="article:author" content="Kuhne">
+<meta property="article:tag" content="计算机视觉">
+<meta property="article:tag" content="深度学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/2901e2f51d643b321c61e158805fe248.jpeg"><link rel="shortcut icon" href="/img/head2.png"><link rel="canonical" href="https://kuhne.gitee.io/kuhne.gitee.io/posts/e3683629"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.0.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.staticfile.org/node-snackbar/0.1.9/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn1.tianli0.top/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#121212","position":"bottom-left"},
+  source: {
+    justifiedGallery: {
+      js: 'https://jsdelivr.pai233.top/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://jsdelivr.pai233.top/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'cS231n 学习笔记（1）knn 及线性分类器',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-07-15 18:09:24'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/resource/JetBrainsMono-Medium.woff2"><link rel="stylesheet" href="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/resource/iconfont.min.css"><link rel="stylesheet" href="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/resource/index.min.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src= "/img/lazyload.gif" data-lazy-src="/img/head.jpg" onerror="onerror=null;src='/img/head.jpg'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">74</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-archive"></i><span> Blog</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-list-ul"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/pictures/"><i class="fa-fw fa fa-camera"></i><span> 图片</span></a></li><li><a class="site-page child" href="/talk/"><i class="fa-fw fas fa-comment-dots"></i><span> 说说</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/2901e2f51d643b321c61e158805fe248.jpeg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Kuhne</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-archive"></i><span> Blog</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-list-ul"></i><span> 时间轴</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fa fa-heartbeat"></i><span> 娱乐</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/pictures/"><i class="fa-fw fa fa-camera"></i><span> 图片</span></a></li><li><a class="site-page child" href="/talk/"><i class="fa-fw fas fa-comment-dots"></i><span> 说说</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">cS231n 学习笔记（1）knn 及线性分类器</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-06-09T09:08:41.000Z" title="发表于 2022-06-09 17:08:41">2022-06-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-07-15T10:09:24.000Z" title="更新于 2022-07-15 18:09:24">2022-07-15</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>14分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="cS231n 学习笔记（1）knn 及线性分类器"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1>计算机视觉CS231n笔记（1）</h1>
+<p><em>图像分类问题 / k-最近邻分类器 / 超参数的选择 / 线性分类</em>  2022/06/02</p>
+<h2 id="一、图像分类问题">一、图像分类问题</h2>
+<h3 id="1-1-图像分类问题介绍">1.1 图像分类问题介绍</h3>
+<p>图像分类问题是计算机视觉的核心任务，也是本节课关注的重点。处理图像分类任务时，分类系统需要接受一些输入图像（比如一只猫的照片），且该系统已经拥有确定了分类或标签的集合 {dog, cat, truck, plane, …}  ，计算机的工作就是看图片，并把它分配给一些固定的分类标签。</p>
+<p>这听起来是一个非常简单的问题，但对电脑来说却并不如此，因为计算机看到的图像（猫）只是一些数字矩阵，很难从中提取图片内容的特征。这个问题被称为<strong>语义鸿沟</strong>，指的是图片表示的内容和计算机实际看到的像素之间存在着巨大的差距。</p>
+<p>我们可以很容易地改变整个像素网格，比如将摄像机移动到另一<strong>角度</strong>，整张图的每一个像素都会发生改变，但是这仍然表示同一只猫。</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/113758-eda7f.png" alt=""></p>
+<p>不只是角度问题，还有<strong>光线问题</strong>，不论光线怎么变化，图像里面始终是一只猫；</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/114104-55275.png" alt=""></p>
+<p>有时候图像也会<strong>变形</strong>，比如猫咪的各种姿态，算法应该也能对这种图像很敏感；</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/114322-fa4fa.png" alt=""></p>
+<p>还有<strong>遮挡</strong>问题，比如仅能看见猫咪的一部分，比如脸、身体、尾巴；</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/114441-f2eda.png" alt=""></p>
+<p>还有<strong>背景重叠</strong>问题，图片主体与背景颜色很相似</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/114558-3ee41.png" alt=""></p>
+<p>还有<strong>类内差异</strong>问题，下图看起来是一群猫，但是每只猫都有视觉差异，有不同的颜色、大小等等</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/114902-6c819.png" alt=""></p>
+<p>算法需要处理以上提到的问题，对于人脑来说是不能再简单的问题，因为我们已经具备处理相应事务的神经，但是对算法来说却是一个很具挑战性的难题。幸运的是，现在已经有足够有效的方法能处理这些事情，有些时候甚至能接近人脑处理。</p>
+<p>如果想调用程序接口完成图像分类，可以写一个 python 方法， 接受一个图片作为参数，然后返回这张图片是猫还是狗。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">classify_image</span>(<span class="params">image</span>):</span><br><span class="line">	<span class="comment"># Some methods</span></span><br><span class="line">	<span class="keyword">return</span> class_label</span><br></pre></td></tr></table></figure>
+<p>并没有什么简介明了的算法可以解决图像识别，这种算法的编写是有一定难度的。人们尝试写出一组硬编码的规则来识别不同的动物，通过计算图像的边缘，再把边角的形状进行分类，并写一些规则来识别不同的动物。</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/120034-4e3d2.png" alt=""></p>
+<p>但实际上这种算法很容易出错，而且如果希望识别不同的类别，就又需要从头来一遍。我们希望开发一些可以识别世界上各种对象的算法，基于这种思想，我们想到用数据驱动的方法，不写具体的分类规则来识别图像，而是从网上抓取大量某类事物的图片数据集，一旦有了这些数据集，就可以训练算法来分类这些图片，电脑会收集所有数据，并用某种方式总结，生成一个模型，得到能识别这些不同对象的核心知识要素，随后用这些模型去识别新的图片。</p>
+<p>所以程序接口就改变为两个函数，一个是训练函数，用户接收<strong>图片</strong>和<strong>标签</strong>，然后输出模型；另一个是预测函数，接收一个模型，对图片进行预测。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train</span>(<span class="params">images, labels</span>):</span><br><span class="line">	<span class="comment"># 机器学习！</span></span><br><span class="line">	<span class="keyword">return</span> model</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">predict</span>(<span class="params">model, test_images</span>):</span><br><span class="line">    <span class="comment"># 使用模型预测标签</span></span><br><span class="line">    <span class="keyword">return</span> test_labels</span><br></pre></td></tr></table></figure>
+<h3 id="1-2-最近邻算法">1.2 最近邻算法</h3>
+<p><strong>最近邻分类器</strong>(<code>NN</code>)也许是最简单的分类器，在训练过程中，只是单纯记录所有的训练数据；预测过程会在训练数据中寻找与新图片最相似的图片，随后给出该图的标签。</p>
+<blockquote>
+<p><code>CIFAR-10</code> 数据集是机器学习最常用的数据集之一，它给出了 10 个不同的类别，一个类别有大约 50,000 张训练数据图，10,000 张测试数据图。</p>
+</blockquote>
+<p>比如，下图是在 <code>CIFAR-10</code> 数据集上的最近邻分类器的分类结果，显示了对应测试实例最相似的训练图片，可以看到虽然他们<strong>不完全正确</strong>，但看起来是非常相似的：</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/123658-dd743.png" alt=""></p>
+<p>使用最近邻分类器能在训练集中找到最接近的样本，而这些样本是训练集中带标签的样本，这时就可以简单地说这个测试图片的内容是该标签对应的事物。</p>
+<p>我们仍需要知道一个细节：给与两张图片，该如何对他们进行比较？</p>
+<p>如果要把测试图片与所有训练图片进行比较，将会有很多不同的函数选择。 比如使用 <code>L1距离</code> ，有时被称为 <code>曼哈顿距离</code>，这是一个简单易行的图片比较方法，只是对这些图片中的单个像素进行比较。</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/125911-db941.png" alt=""></p>
+<p>假设测试图片只是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mo>×</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">4 \times 4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span> 的小图片，取左上角的像素，用它减去训练图像对应像素的值再取绝对值，就可以得到这两幅图像在该像素上的差别，最后将图像中所有像素的差值相加，得到改图存在 456 处不同。虽然这种方式看起来很蠢，但有时有却有它的合理性。</p>
+<p>这是最近邻算法的完整代码：</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/130711-426f7.png" alt="9"></p>
+<p>可以看到过程非常简明，因为使用了向量运算。在训练过程中仅需要存储数据，在预测过程中使用 L1 距离函数比较测试图片和训练实例，最后在训练集中找到最相似的实例。</p>
+<blockquote>
+<p>这里有一个关于简单分类器的问题：</p>
+<ul>
+<li>Q：如果训练集中有 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span> 个实例，训练和测试的过程可以有多快？</li>
+<li>A：训练：O(1)，因为训练是连续的过程，只需要存储数据；预测：O(N)，因为要将每一张训练图片跟测试图片进行比较 。</li>
+</ul>
+<p>所以这个过程是一个<strong>非常落后</strong>的算法，因为在实际应用中，我们偏向于希望训练过程可以慢一点，但预测过程要快一些。卷积神经网络却相反，训练过程很长，但是预测速度非常快。</p>
+<p>有一个很有趣的类比：相当于平时不看书，考试的时候拼命翻书找答案但效率非常低</p>
+</blockquote>
+<p>那么在实际应用中，最近邻算法的表现如何？</p>
+<p>这是最近邻分类器的决策边界：</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/140618-518a6.png" alt=""></p>
+<p>训练集包含二维平面中的这些点，点的颜色代表不同的类别，这里有五个类， 对整幅图像中的每个点来说，我们将计算这些训练数据中最相似的实例，然后在这些点的背景上着色，标示出它的类标签。可以发现最近邻分类器是根据相邻的点来切割空间并进行着色（其实就是通过两个点之间的垂直平分线进行分割），观察这张图可以看到最近邻分类器的一些问题：首先是在一大片绿色区域的中间存在着一个黄点，可能是由于存在噪音，导致原来的绿色样本被判断为黄色；其次就是相邻区域的边界划分不光滑，太过扭曲。</p>
+<h3 id="1-3-K-最近邻算法">1.3  K-最近邻算法</h3>
+<p>从以上的问题出发，就产生了 <code>K-最近邻</code> 算法(<code>KNN</code>) 它不只是寻找最近的点，还会找到最近的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span> 个点，然后在这些相邻点中进行投票，随后将票数多的临近点作为预测结果。 这里我们用同样的数据集，并分别令K-最近邻的参数为  <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>1</mn><mtext>、</mtext><mi>K</mi><mo>=</mo><mn>3</mn><mtext>、</mtext><mi>K</mi><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">K=1、K=3、K=5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">1</span><span class="mord cjk_fallback">、</span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">3</span><span class="mord cjk_fallback">、</span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">5</span></span></span></span> ：</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/142225-2b568.png" alt=""></p>
+<p>在 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">K=3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span> 时可以看到，绿色区域中的黄色噪点不会把周围的区域划分为黄色，且黄、绿、紫三色的边界变得更加平滑； 当 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">K=5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">5</span></span></span></span> 时，蓝色和红色之间的决策边界也会变得更加平滑。所以在使用 K-最近邻 算法时，总会为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span> 赋上一个比较大的值，使角色边界更加平滑，以得到一个更好的结果。</p>
+<blockquote>
+<p>Q：白色的区域是什么？</p>
+<p>A：白色区域代表没有获得 K-最近邻的投票，可以将其归为其他类别。</p>
+</blockquote>
+<p>回到图片上观察 KNN 算法，可以看到它的标签并不好（图中标出了红绿框，红色代表预测错误，绿色代表预测正确）：</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/144036-c5bc2.png" alt=""></p>
+<p>但如果使用一个更大的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span>  值，那么就可能就会选择前三名或前五名进行投票，投票的结果就是最终分类的结果（投票就是选出最多的那个类）。</p>
+<p>我们已经了解了 L1 距离，即像素之间绝对值的总和。但还有一种常见的选择是 L2 距离，也就是欧氏距离，数值上等于两点差的平方和开根号。</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/145707-8d6dc.png" alt=""></p>
+<p>L2 距离实际上是一个根据 L1 距离形成的圆，如果输入的特征向量有一些重要的意义（比如员工工资、年龄等等）， 更适合使用 L1 距离；如果它只是某个空间中的一个通用向量，则更适合 L2 距离。</p>
+<p>通过使用不同的距离度量，可以将 KNN 泛化到许多不同的数据类型上，不仅仅是向量、图像，还可以是文本等。</p>
+<blockquote>
+<p>个人理解：</p>
+<p>L1 距离就是坐标点 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(x,y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="mclose">)</span></span></span></span> 的差，图中方形上的点到原点都是等距的，比如点 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>0.5</mn><mo separator="true">,</mo><mn>0.5</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(0.5,0.5)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">0.5</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0.5</span><span class="mclose">)</span></span></span></span> 和坐标 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>0</mn><mo separator="true">,</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(0,1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span> ，它们都是边上的点，它们到原点的距离都是 1，如果改变坐标轴的位置，那么 L1 距离就会发生改变（比如将坐标轴向下移动一个单位，原来的 L1 距离就全变了）。</p>
+<p>而 L2 距离是空间中的距离，改变坐标轴是不会改变两点之间的距离的（就是两点间的距离公式）。</p>
+</blockquote>
+<p>下图展示了 L1 距离下和 L2 距离下决策边界的形状：</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/152007-41bb3.png" alt=""></p>
+<p>可以看到这些决策边界的形状区别很大：L1 距离趋向于跟随坐标轴，而 L2 并不会受到坐标轴影响。</p>
+<h2 id="二、超参数的选择">二、超参数的选择</h2>
+<p>如果尝试在实践用应用 KNN 算法，我们将面临几个选择：<strong>K 值</strong>的选取和<strong>距离度量</strong>的选取，而这些参数的选择依赖于具体的问题。</p>
+<blockquote>
+<p>这种参数被称为超参数，它们不是通过算法训练得到的，而是自己设定的值。</p>
+</blockquote>
+<p>尝试不同的超参数也有很多种选择：</p>
+<ul>
+<li>
+<p>方法 1：选择在<strong>训练集</strong>中准确率最高（表现最好）的超参数</p>
+<p>这其实是一种非常不好的想法， 因为会产生过拟合问题</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/154638-d2b64.png" alt=""></p>
+</li>
+<li>
+<p>方法 2：将数据集分割为训练集和测试集，选择在<strong>测试集</strong>表现最佳的参数</p>
+<p>这看起来很合理，但仍然不是一个好方法，这样选取的参数只能被证明在这组测试集上可以表现得很好，但无法代表算法在全新的数据集上能表现得很好。</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/154645-8ac56.png" alt=""></p>
+</li>
+<li>
+<p>方法 3：将数据分割为训练集、验证集和测试集，在<strong>训练集</strong>上训练参数，在<strong>验证集</strong>上选择表现最好的参数，最后在<strong>测试集</strong>上评估这组参数的效果。</p>
+<p>这种方法才是确定参数的最好方式。</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/154653-f2835.png" alt=""></p>
+</li>
+<li>
+<p>方法 4：采用交叉验证集，将训练数据分成很多份，轮流将每一份都当作验证集，这种方式在<strong>小数据集</strong>中更常用一些，在深度学习中不常用。</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/155908-7eed2.png" alt=""></p>
+<p>经过交叉验证可能会得到这样一张图：</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/161116-f6d42.png" alt=""></p>
+<p>X 轴表示 KNN 中参数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span></span></span></span> 的取值，Y 轴代表算法预测的准确率。这里使用了 5 折交叉验证，也就是将训练集分为了五份，对算法进行五次测试（每个点代表一个fold ，曲线代表平均值 ）。这张图可以体现算法的表现与各个超参数之间的关系，最后可以跳出在验证集上表现最好的模型以及相应的超参数。这里我们返现 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>7</mn></mrow><annotation encoding="application/x-tex">K=7</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">K</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">7</span></span></span></span> 时效果最好。</p>
+</li>
+</ul>
+<blockquote>
+<p>可以将训练集类比为高中的练习题，验证集类比为学校的期末考试，测试集类比为高考试卷。</p>
+</blockquote>
+<p>其实在 KNN 在图像分类中很少用到，因为它的预测时间过长，与需求不符，且 L1 、L2 距离度量不适合用在比较图像上，比如将下方图片进行遮挡、移动、染色，可以控制 L2 距离值相等。</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/162813-90023.png" alt=""></p>
+<p>KNN 算法还有一个被称为 <code>维度灾难</code> 的问题。KNN 算法有点像是用训练数据将样本空间分为几块，这意味着需要将训练数据密集地分布在空间中，否则最近邻点的实际距离可能很远，也就是说和待测样本的相似性没有很高。而想要密集地分布在空间中，就需要<strong>指数倍</strong>地训练数据。</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/214213-f7273.png" alt=""></p>
+<p>KNN 介绍了图像分类的基本思路，借助训练集的图片和相应的标记可以将测试集中的数据进行分类。</p>
+<h2 id="三、-线性分类">三、  线性分类</h2>
+<p>线性分类是一个很重要的算法，也是一个相当简单的算法，它有助于建立起整个神经网络和卷积网络。</p>
+<p>我们经常把神经网络比喻为玩乐高，可以将不同种类的神经网络组件组合在一起，来构建不同的大型卷积网络，而线性分类器是在不同类型的深度学习应用程序中最基本的构建块之一，所以很好地了解线性分类器工作原理是非常重要的。</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/172758-eaab5.png" alt=""></p>
+<ul>
+<li>
+<p>例子</p>
+<p>输入一幅图像，系统可以数据用于描述图像的句子。这类工作方式是通过卷积神经网络和循环神经网络共同完成的：卷积神经网络只关注图像，而循环神经网络只关注语言，像乐高一样将他们组合到一起并同时进行训练，而线性分类器就像巨型网络的基础模块。</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/174009-629f6.png" alt=""></p>
+</li>
+</ul>
+<p>在 <code>CIFAR-10</code> 中每一类有 50,000 个训练样本，每个图像都是 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>32</mn><mo>×</mo><mn>32</mn></mrow><annotation encoding="application/x-tex">32 \times 32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">32</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">32</span></span></span></span> 的图像，每幅图像有 3 个色彩通道。</p>
+<p>线性分类参数模型有两个不同的部分，以下图为例，有一张作为输入的图片 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span></span></span></span> ，还有一组参数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span> （有时也叫 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">θ</span></span></span></span>）。</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/174323-5cf7f.png" alt=""></p>
+<p>现在需要编写一些函数，输入是数据 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span></span></span></span> 和参数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span> ，输出是 10 个数字，用于描述该图片与 <code>CIFAR-10</code> 中 10 个类别的相似程度（比如输出猫的相似程度值很高，就表明该图是猫的可能性更大）。</p>
+<p>线性分类器是参数模型中最简单的例子，对应的函数就是：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>W</mi><mo stretchy="false">)</mo><mo>=</mo><mi>W</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">f(x,W)=Wx
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mord mathnormal">x</span></span></span></span></span></p>
+<p>其中 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> 是一张像素为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>32</mn><mo>×</mo><mn>32</mn></mrow><annotation encoding="application/x-tex">32 \times 32</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">32</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">32</span></span></span></span> 的 RGB 图像，可以将其展开成一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3072</mn><mo>×</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">3072 \times 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">3072</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 的向量，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>W</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">f(x,W)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mclose">)</span></span></span></span> 是一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>×</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">10 \times 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">10</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 的向量，用于说明该图像在每一个类别上的“得分”情况，从而解出参数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span> 是一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>×</mo><mn>3072</mn></mrow><annotation encoding="application/x-tex">10 \times 3072</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">10</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3072</span></span></span></span> 的参数矩阵。</p>
+<p>有时候会增加一个偏置 (bias) 项 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span> ，他是一个包含 10 个元素的常数向量，且不与训练数据交互，只是为了给一些数据添加偏好值，当数据集不平衡时，比如猫的数量远大于狗，那么猫的偏差值就会比其他的类要高，原式就修改为：</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>W</mi><mo stretchy="false">)</mo><mo>=</mo><mi>W</mi><mi>x</mi><mo>+</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">f(x,W)=Wx+b
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.10764em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span></span></p>
+<p>以下是一个计算的例子：</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/195955-b821b.png" alt=""></p>
+<p>左侧是一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">2\times2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">2</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> 的图像，假设数据集包含了三类图片，猫、狗和船。首先将图像展开为一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mo>×</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">4\times1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> 的向量，然后用一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mo>×</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">3\times4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span></span></span></span> 的权重（参数）矩阵乘以该向量，再加上一个偏置 (bias) 项，就能得到该图片对应三类的得分。</p>
+<p>可以将线性分类理解为一种<strong>模板匹配</strong>方法，该参数矩阵中的每一行对应图像的某个模板，现在根据参数矩阵和图像向量的点积，可以得到每个类和图像的像素之间的相似程度。</p>
+<blockquote>
+<p>以上是线性分类的<strong>代数解释</strong></p>
+</blockquote>
+<p>如果以这种模板匹配的思想考虑线性分类器，就可以取出该参数矩阵的某一行，并将其还原回图像（即将模板可视化），这可以展示线性分类器是如何理解数据的。以下展示了训练好的参数的可视化结果。</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/202331-9ff4c.png" alt=""></p>
+<p>可以看到这些图像可能与数据集中的图片并不相像，因为线性分类器只能得到每个类别的<strong>一个模板</strong>（参数），只能尽可能地求出平均值。而神经网络和更复杂的其他模型就没这个限制，所以能得到更好的准确率。</p>
+<blockquote>
+<p>以上是线性分类的<strong>可视化解释</strong></p>
+</blockquote>
+<p>线性分类器的另一个观点是回归到图像，我们可以把每张图像都当作<strong>高维空间的一个点</strong>，现在线性分类器尝试绘制线性的决策边界，来划分一个类别。如下图所示，左上角是飞机分类器，线性分类绘制出了一条直线，将飞机和其他类区分开来。</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/203709-01fe9.png" alt=""></p>
+<p>当我们从高维的角度思考线性分类器，就能看到他可能会出现的问题：</p>
+<p><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2022/06/03/204223-776f7.png" alt=""></p>
+<p>观察以上图像，假设数据集有蓝色和红色两类，在第一幅图中，蓝色表示大于零的像素个数为奇数的图像，红色表示大于零的像素个数为偶数的图像，每个类别在平面上都有两个象限，但是并没有一条单独的直线可以将红蓝两个样本分开（线性不可分）；第三幅图对应了多分类问题，蓝色类别存在于三个不同的象限，代表着一种类别，而红色区域代表着另一种类别，可以看出来仍然是线性不可分的。</p>
+<blockquote>
+<p>以上是线性分类的<strong>几何解释</strong></p>
+<p>还有一种线性分类器难以处理的数据：多模态数据（比如声音和图片）。</p>
+</blockquote>
+<p>但是线性分类器是一个非常简单的算法，易于理解和使用。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Kuhne</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://kuhne.gitee.io/kuhne.gitee.io/posts/e3683629.html">https://kuhne.gitee.io/kuhne.gitee.io/posts/e3683629.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://kuhne.gitee.io/kuhne.gitee.io" target="_blank">Kuhne</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E8%A7%86%E8%A7%89/">计算机视觉</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></div><div class="post_share"></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/posts/9357609.html"><img class="prev-cover" src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/2901e2f51d643b321c61e158805fe248.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">cs231n 学习笔记（2）损失函数和优化</div></div></a></div><div class="next-post pull-right"><a href="/posts/e7188b37.html"><img class="next-cover" src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/1c1d3d92-1bee-4cbd-9e14-43bcf5180b81_.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">吴恩达机器学习课程笔记及作业归纳</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/posts/4a818336.html" title="cs231n 学习笔记（12）生成模型"><img class="cover" src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/2901e2f51d643b321c61e158805fe248.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-24</div><div class="title">cs231n 学习笔记（12）生成模型</div></div></a></div><div><a href="/posts/1af2ae7a.html" title="cs231n 学习笔记（11）可视化与理解"><img class="cover" src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/2901e2f51d643b321c61e158805fe248.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-15</div><div class="title">cs231n 学习笔记（11）可视化与理解</div></div></a></div><div><a href="/posts/1819e07.html" title="cs231n 学习笔记（10）目标检测与图像分割"><img class="cover" src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/2901e2f51d643b321c61e158805fe248.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-15</div><div class="title">cs231n 学习笔记（10）目标检测与图像分割</div></div></a></div><div><a href="/posts/3fc42b2c.html" title="cs231n 学习笔记（9）循环神经网络"><img class="cover" src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/2901e2f51d643b321c61e158805fe248.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-10</div><div class="title">cs231n 学习笔记（9）循环神经网络</div></div></a></div><div><a href="/posts/dc7d8d44.html" title="cs231n 学习笔记（8）经典的 CNN 架构"><img class="cover" src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/2901e2f51d643b321c61e158805fe248.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-07-03</div><div class="title">cs231n 学习笔记（8）经典的 CNN 架构</div></div></a></div><div><a href="/posts/90deef5.html" title="cs231n 学习笔记（7）深度学习软件"><img class="cover" src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/2901e2f51d643b321c61e158805fe248.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-26</div><div class="title">cs231n 学习笔记（7）深度学习软件</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src= "/img/lazyload.gif" data-lazy-src="/img/head.jpg" onerror="this.onerror=null;this.src='/img/head.jpg'" alt="avatar"/></div><div class="author-info__name">Kuhne</div><div class="author-info__description"></div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">74</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">44</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">10</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://gitee.com/kuhne/kuhne.gitee.io"><i class="fab fa-github"></i><span>来瞅瞅？</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="http://wpa.qq.com/msgrd?v=3&amp;uin=1064675347&amp;site=qq&amp;menu=yes" target="_blank" title="腾讯QQ"><i class="fab fa-qq"></i></a><a class="social-icon" href="mailto:1064675347@qq.com" target="_blank" title="微信"><i class="fab fa-weixin"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的博客</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">计算机视觉CS231n笔记（1）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98"><span class="toc-text">一、图像分类问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98%E4%BB%8B%E7%BB%8D"><span class="toc-text">1.1 图像分类问题介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E6%9C%80%E8%BF%91%E9%82%BB%E7%AE%97%E6%B3%95"><span class="toc-text">1.2 最近邻算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-K-%E6%9C%80%E8%BF%91%E9%82%BB%E7%AE%97%E6%B3%95"><span class="toc-text">1.3  K-最近邻算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E8%B6%85%E5%8F%82%E6%95%B0%E7%9A%84%E9%80%89%E6%8B%A9"><span class="toc-text">二、超参数的选择</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81-%E7%BA%BF%E6%80%A7%E5%88%86%E7%B1%BB"><span class="toc-text">三、  线性分类</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/8d037627.html" title="Git 及 GitHub 常用命令记录"><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2023/02/27/20230227141226-160f64.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Git 及 GitHub 常用命令记录"/></a><div class="content"><a class="title" href="/posts/8d037627.html" title="Git 及 GitHub 常用命令记录">Git 及 GitHub 常用命令记录</a><time datetime="2023-02-27T06:08:31.000Z" title="发表于 2023-02-27 14:08:31">2023-02-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/a6d8a9c3.html" title="个人常用 Linux 命令"><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/article-img/2023/02/26/20230226105141-94929b.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="个人常用 Linux 命令"/></a><div class="content"><a class="title" href="/posts/a6d8a9c3.html" title="个人常用 Linux 命令">个人常用 Linux 命令</a><time datetime="2023-02-26T02:47:48.000Z" title="发表于 2023-02-26 10:47:48">2023-02-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/3b91aa4a.html" title="Linux 服务器环境配置"><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/4c417afa91736428def17dcc96aa64b8.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux 服务器环境配置"/></a><div class="content"><a class="title" href="/posts/3b91aa4a.html" title="Linux 服务器环境配置">Linux 服务器环境配置</a><time datetime="2022-09-14T08:01:29.000Z" title="发表于 2022-09-14 16:01:29">2022-09-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/165b6b1f.html" title="论文整理（3）Measuring Compositional Consistency for Video Question Answering"><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/top2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文整理（3）Measuring Compositional Consistency for Video Question Answering"/></a><div class="content"><a class="title" href="/posts/165b6b1f.html" title="论文整理（3）Measuring Compositional Consistency for Video Question Answering">论文整理（3）Measuring Compositional Consistency for Video Question Answering</a><time datetime="2022-09-03T07:28:11.000Z" title="发表于 2022-09-03 15:28:11">2022-09-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/22673bc3.html" title="论文学习笔记整理"><img src= "/img/lazyload.gif" data-lazy-src="https://kuhne-blog-img.oss-cn-hangzhou.aliyuncs.com/blog/img/dknjyLgQcEXhsuK.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文学习笔记整理"/></a><div class="content"><a class="title" href="/posts/22673bc3.html" title="论文学习笔记整理">论文学习笔记整理</a><time datetime="2022-08-24T05:50:52.000Z" title="发表于 2022-08-24 13:50:52">2022-08-24</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By Kuhne</div><div class="footer_custom_text">欢迎来到<a href="https://kuhne.gitee.io/kuhne.gitee.io/">我的博客!</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn1.tianli0.top/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="https://cdn.staticfile.org/instant.page/5.1.0/instantpage.min.js" type="module"></script><script src="https://cdn.staticfile.org/vanilla-lazyload/17.3.1/lazyload.iife.min.js"></script><script src="https://cdn.staticfile.org/node-snackbar/0.1.9/snackbar.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.staticfile.org/KaTeX/0.15.3/katex.min.css"><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.15.2/contrib/copy-tex.min.js"></script><link rel="stylesheet" type="text/css" href="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/KaTeX/0.15.2/contrib/copy-tex.min.css"><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script><script>function loadValine () {
+  function initValine () {
+    const valine = new Valine(Object.assign({
+      el: '#vcomment',
+      appId: 'S47HOBqpgUCutu7Azmdww7o3-gzGzoHsz',
+      appKey: 'CGS1ktSYn9hr3dpj8vWHdHFz',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      path: window.location.pathname,
+      visitor: false
+    }, null))
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.staticfile.org/valine/1.4.18/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+  else setTimeout(loadValine, 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script></div><script src="https://jsdelivr.pai233.top/npm/butterfly-extsrc@1/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = false;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script src="https://cdn1.tianli0.top/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener scroll 
+  window.tocScrollFn && window.removeEventListener('scroll', window.tocScrollFn)
+  window.scrollCollect && window.removeEventListener('scroll', scrollCollect)
+
+  typeof preloader === 'object' && preloader.initLoading()
+  document.getElementById('rightside').style.cssText = "opacity: ''; transform: ''"
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+document.addEventListener('pjax:error', (e) => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
