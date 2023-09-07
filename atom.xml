@@ -3,11 +3,11 @@
   <title>Kuhne</title>
   
   <subtitle>间接性内卷 持续性摆烂</subtitle>
-  <link href="https://gitee.com/kuhne/kuhne.gitee.io/atom.xml" rel="self"/>
+  <link href="https://kuhne.gitee.io/kuhne.gitee.io/atom.xml" rel="self"/>
   
-  <link href="https://gitee.com/kuhne/kuhne.gitee.io/"/>
+  <link href="https://kuhne.gitee.io/kuhne.gitee.io/"/>
   <updated>2023-09-06T03:38:54.941Z</updated>
-  <id>https://gitee.com/kuhne/kuhne.gitee.io/</id>
+  <id>https://kuhne.gitee.io/kuhne.gitee.io/</id>
   
   <author>
     <name>Kuhne</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Git 及 GitHub 常用命令记录</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/8d037627.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/8d037627.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/8d037627.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/8d037627.html</id>
     <published>2023-02-27T06:08:31.000Z</published>
     <updated>2023-09-06T03:38:54.941Z</updated>
     
@@ -30,17 +30,17 @@
     
     
     
-    <category term="Git" scheme="https://gitee.com/kuhne/kuhne.gitee.io/categories/Git/"/>
+    <category term="Git" scheme="https://kuhne.gitee.io/kuhne.gitee.io/categories/Git/"/>
     
     
-    <category term="Git" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/Git/"/>
+    <category term="Git" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/Git/"/>
     
   </entry>
   
   <entry>
     <title>个人常用 Linux 命令</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/a6d8a9c3.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/a6d8a9c3.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/a6d8a9c3.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/a6d8a9c3.html</id>
     <published>2023-02-26T02:47:48.000Z</published>
     <updated>2023-07-04T12:23:50.564Z</updated>
     
@@ -51,17 +51,17 @@
     
     
     
-    <category term="Linux" scheme="https://gitee.com/kuhne/kuhne.gitee.io/categories/Linux/"/>
+    <category term="Linux" scheme="https://kuhne.gitee.io/kuhne.gitee.io/categories/Linux/"/>
     
     
-    <category term="Linux" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/Linux/"/>
+    <category term="Linux" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/Linux/"/>
     
   </entry>
   
   <entry>
     <title>Linux 服务器环境配置</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/3b91aa4a.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/3b91aa4a.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/3b91aa4a.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/3b91aa4a.html</id>
     <published>2022-09-14T08:01:29.000Z</published>
     <updated>2023-09-06T03:35:52.262Z</updated>
     
@@ -72,21 +72,21 @@
     
     
     
-    <category term="Linux" scheme="https://gitee.com/kuhne/kuhne.gitee.io/categories/Linux/"/>
+    <category term="Linux" scheme="https://kuhne.gitee.io/kuhne.gitee.io/categories/Linux/"/>
     
     
-    <category term="Linux" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/Linux/"/>
+    <category term="Linux" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/Linux/"/>
     
-    <category term="服务器" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
+    <category term="服务器" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
     
-    <category term="pycharm" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/pycharm/"/>
+    <category term="pycharm" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/pycharm/"/>
     
   </entry>
   
   <entry>
     <title>论文整理（3）Measuring Compositional Consistency for Video Question Answering</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/165b6b1f.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/165b6b1f.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/165b6b1f.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/165b6b1f.html</id>
     <published>2022-09-03T07:28:11.000Z</published>
     <updated>2023-03-04T05:22:06.640Z</updated>
     
@@ -97,21 +97,21 @@
     
     
     
-    <category term="深度学习" scheme="https://gitee.com/kuhne/kuhne.gitee.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    <category term="深度学习" scheme="https://kuhne.gitee.io/kuhne.gitee.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-    <category term="论文" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E8%AE%BA%E6%96%87/"/>
+    <category term="论文" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E8%AE%BA%E6%96%87/"/>
     
-    <category term="2022CVPR" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/2022CVPR/"/>
+    <category term="2022CVPR" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/2022CVPR/"/>
     
-    <category term="视频问答" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E8%A7%86%E9%A2%91%E9%97%AE%E7%AD%94/"/>
+    <category term="视频问答" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E8%A7%86%E9%A2%91%E9%97%AE%E7%AD%94/"/>
     
   </entry>
   
   <entry>
     <title>论文学习笔记整理</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/22673bc3.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/22673bc3.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/22673bc3.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/22673bc3.html</id>
     <published>2022-08-24T05:50:52.000Z</published>
     <updated>2023-09-06T03:33:56.250Z</updated>
     
@@ -122,19 +122,19 @@
     
     
     
-    <category term="深度学习" scheme="https://gitee.com/kuhne/kuhne.gitee.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    <category term="深度学习" scheme="https://kuhne.gitee.io/kuhne.gitee.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-    <category term="归纳" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E5%BD%92%E7%BA%B3/"/>
+    <category term="归纳" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E5%BD%92%E7%BA%B3/"/>
     
-    <category term="论文" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E8%AE%BA%E6%96%87/"/>
+    <category term="论文" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E8%AE%BA%E6%96%87/"/>
     
   </entry>
   
   <entry>
     <title>论文整理（2）VRDFormer_End-to-End_Video_Visual_Relation_Detection_With_Transformers</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/51cb83d8.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/51cb83d8.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/51cb83d8.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/51cb83d8.html</id>
     <published>2022-08-24T05:37:48.000Z</published>
     <updated>2023-09-06T03:20:20.569Z</updated>
     
@@ -145,21 +145,21 @@
     
     
     
-    <category term="深度学习" scheme="https://gitee.com/kuhne/kuhne.gitee.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    <category term="深度学习" scheme="https://kuhne.gitee.io/kuhne.gitee.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-    <category term="论文" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E8%AE%BA%E6%96%87/"/>
+    <category term="论文" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E8%AE%BA%E6%96%87/"/>
     
-    <category term="视觉关系探测" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E8%A7%86%E8%A7%89%E5%85%B3%E7%B3%BB%E6%8E%A2%E6%B5%8B/"/>
+    <category term="视觉关系探测" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E8%A7%86%E8%A7%89%E5%85%B3%E7%B3%BB%E6%8E%A2%E6%B5%8B/"/>
     
-    <category term="2022CVPR" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/2022CVPR/"/>
+    <category term="2022CVPR" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/2022CVPR/"/>
     
   </entry>
   
   <entry>
     <title>d2l-动手学深度学习笔记目录</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/c2452c30.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/c2452c30.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/c2452c30.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/c2452c30.html</id>
     <published>2022-08-24T05:01:24.000Z</published>
     <updated>2023-09-06T03:34:15.067Z</updated>
     
@@ -170,19 +170,19 @@
     
     
     
-    <category term="机器学习" scheme="https://gitee.com/kuhne/kuhne.gitee.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    <category term="机器学习" scheme="https://kuhne.gitee.io/kuhne.gitee.io/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
     
     
-    <category term="深度学习" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    <category term="深度学习" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
-    <category term="归纳" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E5%BD%92%E7%BA%B3/"/>
+    <category term="归纳" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E5%BD%92%E7%BA%B3/"/>
     
   </entry>
   
   <entry>
     <title>注意力机制及Transformer笔记</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/4eaebf01.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/4eaebf01.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/4eaebf01.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/4eaebf01.html</id>
     <published>2022-08-24T04:46:32.000Z</published>
     <updated>2023-09-06T03:38:23.901Z</updated>
     
@@ -193,17 +193,17 @@
     
     
     
-    <category term="深度学习" scheme="https://gitee.com/kuhne/kuhne.gitee.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    <category term="深度学习" scheme="https://kuhne.gitee.io/kuhne.gitee.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-    <category term="深度学习" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    <category term="深度学习" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
   </entry>
   
   <entry>
     <title>知识蒸馏及其代码实现</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/3a825668.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/3a825668.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/3a825668.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/3a825668.html</id>
     <published>2022-08-24T04:39:59.000Z</published>
     <updated>2023-09-06T05:03:51.721Z</updated>
     
@@ -214,19 +214,19 @@
     
     
     
-    <category term="深度学习" scheme="https://gitee.com/kuhne/kuhne.gitee.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    <category term="深度学习" scheme="https://kuhne.gitee.io/kuhne.gitee.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-    <category term="深度学习" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    <category term="深度学习" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
-    <category term="Pytorch" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/Pytorch/"/>
+    <category term="Pytorch" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/Pytorch/"/>
     
   </entry>
   
   <entry>
     <title>Kaggle 竞赛（2）：图片分类</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/af3fbdec.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/af3fbdec.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/af3fbdec.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/af3fbdec.html</id>
     <published>2022-08-13T01:43:10.000Z</published>
     <updated>2023-03-04T05:22:06.601Z</updated>
     
@@ -238,14 +238,14 @@
     
     
     
-    <category term="Kaggle" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/Kaggle/"/>
+    <category term="Kaggle" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/Kaggle/"/>
     
   </entry>
   
   <entry>
     <title>PyTorch 模型复现（7）：经典卷积神经网络（下）.</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/427694ff.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/427694ff.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/427694ff.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/427694ff.html</id>
     <published>2022-08-13T01:40:19.000Z</published>
     <updated>2023-09-06T03:46:27.841Z</updated>
     
@@ -257,16 +257,16 @@
     
     
     
-    <category term="PyTorch" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/PyTorch/"/>
+    <category term="PyTorch" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/PyTorch/"/>
     
-    <category term="模型复现" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%8E%B0/"/>
+    <category term="模型复现" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%8E%B0/"/>
     
   </entry>
   
   <entry>
     <title>PyTorch 模型复现（7）：经典卷积神经网络（上）</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/73da8444.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/73da8444.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/73da8444.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/73da8444.html</id>
     <published>2022-08-13T01:37:35.000Z</published>
     <updated>2023-09-06T03:46:25.667Z</updated>
     
@@ -278,16 +278,16 @@
     
     
     
-    <category term="PyTorch" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/PyTorch/"/>
+    <category term="PyTorch" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/PyTorch/"/>
     
-    <category term="模型复现" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%8E%B0/"/>
+    <category term="模型复现" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%8E%B0/"/>
     
   </entry>
   
   <entry>
     <title>PyTorch 模型复现（6）：深度学习与卷积神经网络</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/c2997c1d.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/c2997c1d.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/c2997c1d.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/c2997c1d.html</id>
     <published>2022-08-06T07:58:35.000Z</published>
     <updated>2023-09-06T03:46:21.632Z</updated>
     
@@ -299,16 +299,16 @@
     
     
     
-    <category term="PyTorch" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/PyTorch/"/>
+    <category term="PyTorch" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/PyTorch/"/>
     
-    <category term="模型复现" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%8E%B0/"/>
+    <category term="模型复现" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%8E%B0/"/>
     
   </entry>
   
   <entry>
     <title>PyTorch 模型复现（5）：模型构造基础</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/c201a194.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/c201a194.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/c201a194.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/c201a194.html</id>
     <published>2022-08-04T11:48:33.000Z</published>
     <updated>2023-09-06T03:46:18.348Z</updated>
     
@@ -320,16 +320,16 @@
     
     
     
-    <category term="PyTorch" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/PyTorch/"/>
+    <category term="PyTorch" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/PyTorch/"/>
     
-    <category term="模型复现" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%8E%B0/"/>
+    <category term="模型复现" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%8E%B0/"/>
     
   </entry>
   
   <entry>
     <title>Kaggle 竞赛Demo：预测房价</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/7bb8d9fa.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/7bb8d9fa.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/7bb8d9fa.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/7bb8d9fa.html</id>
     <published>2022-08-03T14:04:21.000Z</published>
     <updated>2023-03-04T05:22:06.601Z</updated>
     
@@ -341,14 +341,14 @@
     
     
     
-    <category term="Kaggle" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/Kaggle/"/>
+    <category term="Kaggle" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/Kaggle/"/>
     
   </entry>
   
   <entry>
     <title>PyTorch 模型复现（4）：正则化及模型初始化</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/32818c6e.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/32818c6e.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/32818c6e.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/32818c6e.html</id>
     <published>2022-08-03T14:02:30.000Z</published>
     <updated>2023-09-06T03:46:15.344Z</updated>
     
@@ -360,16 +360,16 @@
     
     
     
-    <category term="PyTorch" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/PyTorch/"/>
+    <category term="PyTorch" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/PyTorch/"/>
     
-    <category term="模型复现" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%8E%B0/"/>
+    <category term="模型复现" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%8E%B0/"/>
     
   </entry>
   
   <entry>
     <title>PyTorch 模型复现（3）：多层感知机</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/ca4a049e.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/ca4a049e.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/ca4a049e.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/ca4a049e.html</id>
     <published>2022-07-29T09:18:06.000Z</published>
     <updated>2023-09-06T03:46:12.379Z</updated>
     
@@ -381,16 +381,16 @@
     
     
     
-    <category term="PyTorch" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/PyTorch/"/>
+    <category term="PyTorch" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/PyTorch/"/>
     
-    <category term="模型复现" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%8E%B0/"/>
+    <category term="模型复现" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%8E%B0/"/>
     
   </entry>
   
   <entry>
     <title>PyTorch 模型复现（2）：Softmax回归</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/aee2e3bf.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/aee2e3bf.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/aee2e3bf.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/aee2e3bf.html</id>
     <published>2022-07-29T06:43:08.000Z</published>
     <updated>2023-09-06T03:46:10.309Z</updated>
     
@@ -402,16 +402,16 @@
     
     
     
-    <category term="PyTorch" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/PyTorch/"/>
+    <category term="PyTorch" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/PyTorch/"/>
     
-    <category term="模型复现" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%8E%B0/"/>
+    <category term="模型复现" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%8E%B0/"/>
     
   </entry>
   
   <entry>
     <title>PyTorch 模型复现（1）：线性回归</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/37f9b718.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/37f9b718.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/37f9b718.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/37f9b718.html</id>
     <published>2022-07-29T06:11:28.000Z</published>
     <updated>2023-09-06T03:46:06.851Z</updated>
     
@@ -423,16 +423,16 @@
     
     
     
-    <category term="PyTorch" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/PyTorch/"/>
+    <category term="PyTorch" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/PyTorch/"/>
     
-    <category term="模型复现" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%8E%B0/"/>
+    <category term="模型复现" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E6%A8%A1%E5%9E%8B%E5%A4%8D%E7%8E%B0/"/>
     
   </entry>
   
   <entry>
     <title>论文整理（1） Show, Ask, Attend, and Answer-A strong baseline for visual question answering</title>
-    <link href="https://gitee.com/kuhne/kuhne.gitee.io/posts/cdcf21cf.html"/>
-    <id>https://gitee.com/kuhne/kuhne.gitee.io/posts/cdcf21cf.html</id>
+    <link href="https://kuhne.gitee.io/kuhne.gitee.io/posts/cdcf21cf.html"/>
+    <id>https://kuhne.gitee.io/kuhne.gitee.io/posts/cdcf21cf.html</id>
     <published>2022-07-28T07:36:02.000Z</published>
     <updated>2023-09-06T03:34:41.552Z</updated>
     
@@ -443,12 +443,12 @@
     
     
     
-    <category term="深度学习" scheme="https://gitee.com/kuhne/kuhne.gitee.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
+    <category term="深度学习" scheme="https://kuhne.gitee.io/kuhne.gitee.io/categories/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"/>
     
     
-    <category term="论文" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E8%AE%BA%E6%96%87/"/>
+    <category term="论文" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E8%AE%BA%E6%96%87/"/>
     
-    <category term="视觉问答" scheme="https://gitee.com/kuhne/kuhne.gitee.io/tags/%E8%A7%86%E8%A7%89%E9%97%AE%E7%AD%94/"/>
+    <category term="视觉问答" scheme="https://kuhne.gitee.io/kuhne.gitee.io/tags/%E8%A7%86%E8%A7%89%E9%97%AE%E7%AD%94/"/>
     
   </entry>
   
